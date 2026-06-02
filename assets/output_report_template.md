@@ -1,0 +1,52 @@
+# 实验目标
+
+说明实验假设、复现目标、算法、环境、seed、steps、metrics、停止规则，以及 train/test evaluation 的边界。
+
+# 配置
+
+- 算法：
+- 环境：
+- Seed：
+- 训练步数：
+- 测试 seed：
+- Policy 模式：deterministic / stochastic
+- 加载 checkpoint：best / latest / other
+- Python / PyTorch / CUDA：
+- CPU / GPU：
+- Conda env / requirements：
+- 训练命令：
+- 测试命令：
+- 输出目录：
+- SHA256 manifest：
+
+# 运行摘要
+
+记录每个阶段做了什么、为什么继续或停止、哪些输出可信、哪些输出已删除。引用 `plan_summary.json`、训练 run 文件夹、evaluation 文件夹和关键 stdout 事件。
+
+# Train/Test 结果
+
+分开汇报训练指标和测试指标。测试部分必须说明 `eval_config.json`、`eval_command.txt`、`eval_episodes.csv`、`eval_summary.json` 的路径、测试 seed、policy 模式、checkpoint 来源和 feasible rate。
+
+# IEEE 图
+
+列出 PDF/EPS/SVG/PNG 预览、数据源、生成命令、SHA256、SVG 字体模式、font family、SVG backend、字体嵌入检查状态。说明图中 hypothesis、metric、threshold、seed 数，以及线性/对数坐标选择理由。
+
+# Threshold Summary
+
+引用 `threshold_summary.csv`，至少说明 `algo, seed_count, threshold, reward_mean, reward_std, cv_mean, feasible_rate`。
+
+# 与论文对比
+
+对照目标论文或 case study 的主要指标、趋势、约束违反 (constraint violation)、消融实验 (ablation study) 结果和差异。
+
+# 异常与处理
+
+记录 NaN/Inf、OOM、alpha/lambda 爆炸、constraint violation 长期不下降、reward 崩塌、环境异常、CSV 不更新、fps 异常等事件及处理动作。
+
+# 专家风险判断
+
+说明结果可信度、边界条件、不可比因素、环境版本风险、seed 数不足风险、统计不确定性、测试策略风险、后续验证需求。
+
+# 下一步建议
+
+给出下一轮训练、参数扫描、threshold sweep、更多 seed、绘图改进、清理动作或停止理由。
