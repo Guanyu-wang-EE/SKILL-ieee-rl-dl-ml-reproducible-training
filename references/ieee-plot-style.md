@@ -37,7 +37,7 @@ Use this reference for figures intended to resemble IEEE Transactions on Smart G
 
 - For multiple seeds, show mean plus/minus std or 95 percent confidence interval.
 - State the number of seeds in the caption or report.
-- Do not hide unstable seeds without a documented risk-gate or cleanup record.
+- Do not hide unstable seeds without a documented anomaly-handling or cleanup record.
 
 ## Legend, Grid, Ticks, Caption
 

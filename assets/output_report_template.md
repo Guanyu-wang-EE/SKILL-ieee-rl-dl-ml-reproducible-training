@@ -1,6 +1,6 @@
 # 实验目标
 
-说明实验假设、复现目标、算法、环境、seed、steps、metrics、停止规则，以及 train/test evaluation 的边界。
+说明实验假设、复现目标、算法、环境、seed、steps、metrics、项目判据，以及 train/test evaluation 的边界。
 
 # 配置
 
@@ -21,7 +21,7 @@
 
 # 运行摘要
 
-记录每个阶段做了什么、为什么继续或停止、哪些输出可信、哪些输出已删除。引用 `plan_summary.json`、训练 run 文件夹、evaluation 文件夹和关键 stdout 事件。
+记录每个阶段做了什么、为什么继续/中断/完成、哪些输出可信、哪些输出已删除。引用 `plan_summary.json`、训练 run 文件夹、evaluation 文件夹和关键 stdout 事件。
 
 # Train/Test 结果
 
@@ -41,7 +41,7 @@
 
 # 异常与处理
 
-记录 NaN/Inf、OOM、alpha/lambda 爆炸、constraint violation 长期不下降、reward 崩塌、环境异常、CSV 不更新、fps 异常等事件及处理动作。
+记录项目自定义异常、数值错误、环境错误、日志/CSV 异常等事件及处理动作。
 
 # 专家风险判断
 
@@ -49,4 +49,4 @@
 
 # 下一步建议
 
-给出下一轮训练、参数扫描、threshold sweep、更多 seed、绘图改进、清理动作或停止理由。
+给出下一轮训练、参数扫描、threshold sweep、更多 seed、绘图改进、清理动作或收尾理由。

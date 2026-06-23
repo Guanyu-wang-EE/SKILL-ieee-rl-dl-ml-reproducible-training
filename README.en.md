@@ -20,7 +20,6 @@ Use this skill for DRL/RL paper reproduction, long training runs, case studies, 
 - `references/realtime-training-monitoring.md`
 - `references/reproducibility-recordkeeping.md`
 - `references/project-hygiene-cleanup.md`
-- `references/early-stop-risk-gates.md`
 - `assets/monitor_training_template.m`
 - `assets/python_file_header_templates.md`
 - `assets/output_report_template.md`
@@ -32,8 +31,7 @@ Use this skill for DRL/RL paper reproduction, long training runs, case studies, 
 - IEEE Transactions-style plotting rules for publication-grade figures.
 - Real-time training traces through CSV/JSONL files, stdout summaries, TensorBoard dashboards, optional MATLAB inspection, checkpoints, and manifests.
 - Reproducibility records for Python, conda, CUDA/PyTorch, GPU/CPU, seeds, commands, paths, and SHA256 manifests.
-- Early-stop gates for bad or contaminated runs.
-- Cleanup discipline that preserves trustworthy successful runs while deleting failed outputs.
+- Cleanup discipline that preserves trustworthy successful runs while deleting failed, half-finished, junk, and misleading exploratory outputs after verification.
 
 ## Validation Scripts
 

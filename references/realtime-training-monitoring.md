@@ -9,8 +9,7 @@ Use a layered monitoring stack instead of binding reproducibility to one viewer:
 | Layer | Status | Role |
 |---|---|---|
 | CSV/JSONL artifacts | Required | Authoritative reproducibility record for audit, recovery, aggregation, and final figures |
-| stdout and `stdout.log` | Required | Lightweight live status, warnings, stops, FPS, and elapsed-time diagnosis |
-| Risk gates | Required | Automatic NaN/Inf, collapse, constraint, alpha/lambda, FPS, and file-update checks |
+| stdout and `stdout.log` | Required | Lightweight live status, warnings, FPS, and elapsed-time diagnosis |
 | Checkpoints | Required | Recovery and model provenance through `latest`, `best`, and final model files |
 | TensorBoard | Recommended | Preferred online dashboard for multi-run, multi-seed, loss, constraint, and hyperparameter inspection |
 | MATLAB `.m` monitor | Optional | CSV-reading compatibility tool for MATLAB-centered inspection or IEEE plotting workflows |
@@ -27,7 +26,7 @@ Every run must write artifacts during training:
 | `episodes.csv` | Episode level | Episode-level outcomes |
 | `updates.csv` | Update-batch level | Losses, alpha/lambda, and update statistics |
 | `summary.json` | Final | Final status and aggregate metrics |
-| `plan_summary.json` | Plan final | Plan-level algorithms, seeds, steps, outputs, stop records, and aggregate status |
+| `plan_summary.json` | Plan final | Plan-level algorithms, seeds, steps, outputs, stage records, and aggregate status |
 | `config.json` | Start | Reproducible configuration |
 | `run_command.txt` | Start | Exact launch command |
 | `stdout.log` | Real time | Console trace retained for diagnosis |
@@ -56,9 +55,9 @@ Print a training summary every 10 episodes or at a fixed step interval:
 [train] env=CarCircle algo=ccpo seed=0 step=12000 ep=38 reward=-34.2 cost=1.8 cv=0.03 alpha=0.72 fps=820 elapsed=00:14:21
 ```
 
-Use risk-event lines with `[warn]`, and stop lines with `[stop]`. Accept `[progress]` for non-episode progress summaries.
+Use `[warn]` for project-defined abnormal events. Accept `[progress]` for non-episode progress summaries.
 
-Warn on alpha/lambda explosion, long reward collapse, NaN/Inf, constraint violation that does not decline, abnormal fps, CSV not updating, or environment interaction errors.
+Warn on abnormalities defined by the current project, such as metric instability, artifact update failures, abnormal fps, or environment interaction errors.
 
 ## TensorBoard Dashboard
 
@@ -113,7 +112,7 @@ Evaluation rules:
 
 ## Plan And Threshold Summaries
 
-At plan level, write `plan_summary.json` after the planned batch finishes or stops. Include algorithms, environments, seeds, steps, output directories, completed runs, failed/stopped runs, and retained/deleted artifacts.
+At plan level, write `plan_summary.json` after the planned batch finishes or is interrupted. Include algorithms, environments, seeds, steps, output directories, completed runs, failed/interrupted runs, and retained/deleted artifacts.
 
 During figure/report generation, write `threshold_summary.csv` when threshold sweeps or feasibility summaries are used. Recommended columns:
 

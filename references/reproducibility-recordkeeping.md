@@ -24,7 +24,7 @@ When useful for the local hardware context, include compatibility notes for 4070
 Every credible run or stage must record:
 
 - What was done.
-- Why the work stopped or continued.
+- Stage status and reason for continuation, interruption, or completion.
 - Which outputs are trustworthy.
 - Which outputs were deleted.
 - Algorithm, environment, seed, steps, metrics, and thresholds.
@@ -41,7 +41,7 @@ Do not write as if long training has not happened when the true state is plan, r
 
 - Experiment objective and hypothesis.
 - Configuration and environment.
-- Seeds, metrics, thresholds, and stop rules.
+- Seeds, metrics, thresholds, and project-defined success criteria.
 - Evaluation/test setup, test seeds, policy mode, and whether `best` or `latest` checkpoint was loaded.
 - Run summary and data tables.
 - IEEE figure index.
@@ -61,7 +61,3 @@ All `.py` files generated for these projects should start with a Chinese-first o
 Large one-command main/run/long-training scripts additionally use the Buddha blessing ASCII header and English blessing specified in `assets/python_file_header_templates.md`.
 
 Inside code, comment only non-obvious and reproducibility-relevant logic such as reward/cost normalization, constraint thresholds, alpha updates, seed fixing, and checkpoint strategy. Do not write empty comments for ordinary assignments or obvious logic.
-
-## Stop Bad Results Early
-
-When results are clearly poor or untrustworthy, stop and record the reason. Examples include unstable learning, non-convergent constraints, alpha explosion, untrustworthy data, or environment version mismatch. Do not continue until bad data pollutes aggregate results.

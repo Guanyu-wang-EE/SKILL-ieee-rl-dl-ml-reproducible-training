@@ -7,7 +7,7 @@ Use this reference at the end of each stage and before final delivery of an RL/D
 At each stage:
 
 1. Verify outputs.
-2. Clean and slim the workspace.
+2. Clean and slim the workspace without popup-style confirmation or separate user consent.
 3. Move to the next stage.
 
 Do not clean first and verify later.
@@ -19,6 +19,7 @@ Delete artifacts that would confuse final reproduction:
 - Temporary test figures.
 - Exploratory plots.
 - Failed run outputs.
+- Half-finished or broken run folders.
 - Old incorrect scripts.
 - Caches.
 - Unexplained JSON/CSV files.
@@ -53,7 +54,7 @@ Equivalent names are acceptable if they preserve time, seed, algorithm, environm
 
 ## Failed Or Corrective Runs
 
-For failed or corrective runs, delete the run folder after verification and record one MD event line in `output.md` or a stage log. The line must include time, reason, and handling action.
+For failed, half-finished, or corrective runs, delete the run folder after verification and record one MD event line in `output.md` or a stage log. The line must include time, reason, and handling action.
 
 ## Successful Runs
 

@@ -19,7 +19,6 @@
   - `references/realtime-training-monitoring.md`
   - `references/reproducibility-recordkeeping.md`
   - `references/project-hygiene-cleanup.md`
-  - `references/early-stop-risk-gates.md`
   - `assets/monitor_training_template.m`
   - `assets/python_file_header_templates.md`
   - `assets/output_report_template.md`
@@ -48,7 +47,7 @@
   - 明确禁止 only-save-at-run-end。
   - 每个 run 实时写 `progress.csv`、`episodes.csv`、`updates.csv`，最终写 `summary.json`。
   - 每 10 episodes 或固定 step interval 输出 PowerShell/Python stdout。
-  - stdout 格式固定为 `[plan]`、`[progress]`、`[train]`、`[warn]`、`[stop]`。
+  - stdout 格式包含 `[plan]`、`[progress]`、`[train]`、`[warn]` 等事件。
   - TensorBoard 作为推荐在线仪表盘；MATLAB 监控模板作为可选兼容层读取轻量 CSV，展示 reward、cost/constraint violation、alpha/lambda、fps/elapsed，不锁训练文件，不依赖 Python 进程结束。
   - checkpoint 至少包含 `latest` 与 `best`，最终保留模型、config、command、summary、manifest。
 
@@ -58,7 +57,7 @@
   - 项目 `README.md`、`requirements.txt`/环境说明、`output.md` 均中文为主，关键词首次出现双语。
   - `output.md` 必须包含实验假设、配置、seed、指标、图表、与论文差异、风险点、下一步建议。
   - 记录 Python、conda env、CUDA/PyTorch、GPU/CPU、seed、命令、路径、SHA256 manifest。
-  - 结果明显异常时及时停止，记录原因，不继续污染总结果。
+  - 记录项目自定义异常、处理动作和可信输出边界。
 
 ### Python 文件头模板
 
@@ -71,17 +70,12 @@
 ### 清理纪律
 
 写入 `references/project-hygiene-cleanup.md`：
-  - 每个 stage：验证通过后再瘦身清理。
+  - 每个 stage：验证通过后直接瘦身清理。
   - 删除失败 run 输出、错误脚本、临时 plot、缓存、无解释中间文件。
+  - 删除半截、废品、误导性探索文件，无需弹窗或再次征得用户同意。
   - 不删除正常多 seed、多算法、多次 validation 的成功记录。
   - 成功 run 必须用 `time + seed + script name` 或等价命名区分。
   - 失败/纠错 run 删除文件夹，只在 MD 日志中保留时间、原因、处理动作。
-
-### 早停与风险门控
-
-写入 `references/early-stop-risk-gates.md`：
-  - NaN/Inf、OOM、alpha/lambda 爆炸、constraint violation 长期不下降、reward 崩塌、环境交互异常、CSV 不更新、fps 异常时触发停机或人工复核。
-  - 停机后删除污染输出，仅保留 MD 事件记录。
 
 
 

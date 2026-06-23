@@ -1,57 +1,55 @@
 ---
 name: ieee-rl-reproducible-training
-description: Use when working on RL/DRL paper reproduction, long training, train/test evaluation, case studies, IEEE Transactions plots, real-time CSV/TensorBoard monitoring with optional MATLAB inspection, traceable outputs, Chinese-first project documentation, reproducible run records, or cleanup of failed training outputs.
+description: Use when RL/DRL paper reproduction or energy-system control work needs long training, traceable train/test evaluation, IEEE TSG/TPS figures, CSV/TensorBoard monitoring, optional MATLAB inspection, Chinese-first reports, reproducible run records, or cleanup of failed/half-finished artifacts.
 ---
 
 # IEEE RL Reproducible Training
 
 ## Overview
 
-Use this skill to make RL/DRL reproduction runs traceable while producing IEEE Transactions-style figures, train/test evaluation records, real-time monitoring artifacts, Chinese-first project documentation, and clean final experiment directories.
+Use this skill to keep RL/DRL reproduction work traceable: live training records, separate train/test evaluation, IEEE-style figures, Chinese-first documentation, and clean final experiment folders.
 
-Keep this `SKILL.md` lightweight. Load the specific reference file needed for the current task instead of copying all detailed rules into context.
+Read only the reference files required by the current task. Do not load every reference by default.
 
-## Standard Workflow
+## Task Router
 
-1. Define the experiment hypothesis and minimum reproduction path: algorithms, environments, seeds, steps, metrics, and stopping rules.
-2. Build the real-time trace structure before long training starts: stdout interval, CSV/JSONL interval, TensorBoard dashboard when available, optional MATLAB CSV monitor, checkpoints, plan summary, and manifest.
-3. Run a small smoke test to verify the environment, CSV writes, stdout summary, TensorBoard event logging when enabled, optional MATLAB CSV readability when used, and checkpoint writes.
-4. Start long training only after the smoke test passes; print PowerShell/Python training summaries every 10 episodes or at a fixed step interval.
-5. Apply mid-run risk gates; stop and record when NaN, alpha/lambda explosion, unreasonable constraint violation, performance collapse, or environment interaction errors appear.
-6. After training, run a separate evaluation/test pass with explicit checkpoint selection, test seeds, policy mode, metrics, and evaluation artifacts.
-7. Generate IEEE figures, manifests, `threshold_summary.csv`, and a Chinese-first `output.md` report.
-8. Verify completeness before cleanup; delete failed outputs and redundant exploratory files, but keep trustworthy successful runs.
-
-## Resource Map
-
-| Need | Load or use |
+| User task | Load |
 |---|---|
-| IEEE Transactions on Smart Grid / Power Systems plot style, export formats, captions, SVG/font manifest rules | `references/ieee-plot-style.md` |
-| Real-time training trace, stdout format, CSV files, TensorBoard dashboard, optional MATLAB monitoring, checkpoints | `references/realtime-training-monitoring.md` and `assets/monitor_training_template.m` |
-| Train/test evaluation records, checkpoint choice, deterministic/stochastic policy mode, test seeds | `references/realtime-training-monitoring.md` and `references/reproducibility-recordkeeping.md` |
-| Chinese-first README/requirements/output report, environment and SHA256 records, Python file header rules | `references/reproducibility-recordkeeping.md`, `assets/python_file_header_templates.md`, and `assets/output_report_template.md` |
-| Early stop gates for NaN/Inf, OOM, alpha/lambda, constraints, reward collapse, CSV/fps anomalies | `references/early-stop-risk-gates.md` |
-| Stage cleanup, failed-run deletion, successful-run preservation, naming discipline | `references/project-hygiene-cleanup.md` |
-| Deterministic run trace verification | `scripts/validate_run_trace.py` |
-| Deterministic IEEE figure manifest verification | `scripts/check_ieee_plot_manifest.py` |
+| Set up or audit long training traces, stdout logs, CSV/JSONL, TensorBoard, checkpoints, smoke tests, or evaluation/test passes | `references/realtime-training-monitoring.md` |
+| Write or audit README, requirements, `output.md`, run records, environment records, SHA256 manifest, or Python headers | `references/reproducibility-recordkeeping.md` plus needed template in `assets/` |
+| Generate or review IEEE Transactions on Smart Grid / Power Systems figures, captions, export formats, SVG fonts, or figure manifests | `references/ieee-plot-style.md`; use `scripts/check_ieee_plot_manifest.py` when a manifest exists |
+| Clean a project stage, delete failed/half-finished/junk artifacts, or preserve successful runs | `references/project-hygiene-cleanup.md` |
+| Use MATLAB for live CSV viewing | `references/realtime-training-monitoring.md` and `assets/monitor_training_template.m` |
+| Verify an existing run folder | Use `scripts/validate_run_trace.py` |
+
+## Minimal Workflow
+
+1. Define the minimum reproducible path: hypothesis, algorithm, environment, seeds, steps, metrics, and outputs.
+2. Before long training, create real-time records and run a smoke test.
+3. During training, write live CSV/JSONL, stdout summaries, TensorBoard events when enabled, and checkpoints.
+4. After training, run a separate evaluation/test pass with explicit checkpoint, policy mode, test seeds, and metrics.
+5. Generate figures, manifests, `threshold_summary.csv` when needed, and Chinese-first reports.
+6. Verify completeness, then clean: delete failed, half-finished, junk, and misleading exploratory files; keep trustworthy successful runs.
 
 ## Operating Rules
 
-- Do not wait until a run ends to write artifacts. Create real-time `progress.csv`, episode/update logs, stdout summaries, `stdout.log`, TensorBoard events when enabled, checkpoints, and plan-level summaries.
-- Treat CSV/JSON artifacts as the authoritative reproducibility record; use TensorBoard as the preferred online dashboard and MATLAB monitors only as optional CSV-reading compatibility tools.
-- Treat IEEE style as publishable scientific communication, not decoration. Use fixed dimensions, fonts, line widths, axis rules, export formats, and manifest records.
+- Do not wait until a run ends to write artifacts.
+- Treat CSV/JSON artifacts as the authoritative reproducibility record. TensorBoard is a dashboard; MATLAB is optional CSV viewing.
+- Keep train and test records separate.
+- Treat IEEE style as scientific communication, not decoration.
 - Keep generated project documentation Chinese-first with bilingual technical terms at first mention.
-- Stop clearly bad runs early and record why. Do not let bad runs contaminate aggregate summaries.
-- Clean only after verification. Delete failed or exploratory artifacts, but preserve successful multi-seed, multi-algorithm, and repeated validation runs with time/seed/script naming.
+- Do not invent generic training termination rules. Use project-defined criteria when the project provides them.
+- Clean after verification by default. Delete failed, half-finished, junk, and misleading exploratory artifacts without popup-style confirmation or separate user consent.
+- Preserve successful multi-seed, multi-algorithm, and repeated validation runs with time/seed/script naming.
 - Do not create extra documentation inside this skill folder. Project `README.md`, `requirements.txt`, and `output.md` are outputs guided by the skill, not skill-internal README files.
 
 ## Verification Commands
 
-Run these when the corresponding artifacts exist:
+Run only the checks that match existing artifacts:
 
 ```bash
 python scripts/validate_run_trace.py path/to/run-folder
 python scripts/check_ieee_plot_manifest.py path/to/figure_manifest.json
 ```
 
-After editing this skill itself, validate the skill folder with the skill-creator validator.
+After editing this skill itself, validate the skill folder structure and markdown formatting.
