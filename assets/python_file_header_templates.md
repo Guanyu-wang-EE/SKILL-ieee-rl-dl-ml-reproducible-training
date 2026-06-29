@@ -18,7 +18,7 @@ Use these templates in Python files generated for RL/DRL reproduction projects g
 
 ## Main / Run / Long-Training Scripts
 
-Use the Buddha ASCII block only for large one-command long-training entry scripts such as `main.py`, `run_*.py`, `train_*.py`, or equivalent project entry points. Do not force it into small utility scripts.
+Use the Buddha ASCII block for generated experiment entry scripts such as `main.py`, `run_*.py`, `train_*.py`, long-training launchers, and equivalent project entry points. Do not force it into small utility scripts.
 
 ```python
 # 佛祖保佑 永无BUG

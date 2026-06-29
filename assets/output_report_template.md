@@ -21,7 +21,7 @@
 
 # 运行摘要
 
-记录每个阶段做了什么、为什么继续/中断/完成、哪些输出可信、哪些输出已删除。引用 `plan_summary.json`、训练 run 文件夹、evaluation 文件夹和关键 stdout 事件。
+记录每个阶段做了什么、为什么继续/中断/完成、哪些输出可信、哪些输出被保留、排除，或在授权清理时删除。引用 `plan_summary.json`、训练 run 文件夹、evaluation 文件夹和关键 stdout 事件。
 
 # Train/Test 结果
 

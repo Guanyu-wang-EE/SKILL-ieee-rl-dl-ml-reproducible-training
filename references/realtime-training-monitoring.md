@@ -26,7 +26,6 @@ Every run must write artifacts during training:
 | `episodes.csv` | Episode level | Episode-level outcomes |
 | `updates.csv` | Update-batch level | Losses, alpha/lambda, and update statistics |
 | `summary.json` | Final | Final status and aggregate metrics |
-| `plan_summary.json` | Plan final | Plan-level algorithms, seeds, steps, outputs, stage records, and aggregate status |
 | `config.json` | Start | Reproducible configuration |
 | `run_command.txt` | Start | Exact launch command |
 | `stdout.log` | Real time | Console trace retained for diagnosis |
@@ -112,7 +111,9 @@ Evaluation rules:
 
 ## Plan And Threshold Summaries
 
-At plan level, write `plan_summary.json` after the planned batch finishes or is interrupted. Include algorithms, environments, seeds, steps, output directories, completed runs, failed/interrupted runs, and retained/deleted artifacts.
+At plan/report level, write `plan_summary.json` after the planned batch finishes or is interrupted. Include algorithms, environments, seeds, steps, output directories, completed runs, failed/interrupted runs, and retained/excluded artifacts.
+
+For PPT-ready reports, manifests, artifact indexes, and missing-figure/table notes, use `references/post-training-reporting.md`.
 
 During figure/report generation, write `threshold_summary.csv` when threshold sweeps or feasibility summaries are used. Recommended columns:
 

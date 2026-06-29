@@ -30,8 +30,10 @@ Every credible run or stage must record:
 - Algorithm, environment, seed, steps, metrics, and thresholds.
 - Train/test split, evaluation seeds, checkpoint choice, and deterministic/stochastic policy mode.
 - CPU/GPU, CUDA, PyTorch, Python, and conda environment.
-- Exact command, output paths, and SHA256 manifest entries.
+- Exact command, output paths, and SHA256 manifest entries when a reporting package is generated.
 - Plan-level `plan_summary.json` and threshold-level `threshold_summary.csv` when applicable.
+
+For PPT-ready Markdown packs, figure/table requirements, reproducibility manifests, artifact indexes, PPT indexes, and missing-output notes, use `references/post-training-reporting.md`.
 
 Do not write as if long training has not happened when the true state is plan, running, stopped, failed, or completed. Keep the status explicit.
 
@@ -44,7 +46,7 @@ Do not write as if long training has not happened when the true state is plan, r
 - Seeds, metrics, thresholds, and project-defined success criteria.
 - Evaluation/test setup, test seeds, policy mode, and whether `best` or `latest` checkpoint was loaded.
 - Run summary and data tables.
-- IEEE figure index.
+- IEEE figure index when figures are generated.
 - `threshold_summary.csv` rows when threshold sweeps are used.
 - Comparison with the target paper or reproduction target.
 - Differences from the paper and plausible causes.
