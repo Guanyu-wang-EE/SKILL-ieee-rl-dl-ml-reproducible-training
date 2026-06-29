@@ -91,9 +91,9 @@ Use `[warn]` for project-defined abnormal events, `[stop]` when stopping a bad r
 
 Warn on abnormalities defined by the current project, such as metric instability, artifact update failures, abnormal fps, or environment interaction errors.
 
-## Three-Cycle Debug Rule
+## Five-Cycle Debug Rule
 
-On any gate, test, or training failure, do not stop immediately. Run at most three distinct-hypothesis cycles without asking routine questions. Each cycle must:
+On any gate, test, or training failure, do not stop immediately. Run at most five distinct-hypothesis cycles without asking routine questions. Each cycle must:
 
 1. reproduce the failure;
 2. locate the first incorrect value;
@@ -102,7 +102,7 @@ On any gate, test, or training failure, do not stop immediately. Run at most thr
 5. apply one minimal patch when supported;
 6. rerun the narrow test, gate, or regression check.
 
-After three failed distinct hypotheses, mark `BLOCKED` with commands, logs, failed hypotheses, artifacts, and the smallest next decision required.
+After five failed distinct hypotheses, mark `BLOCKED` with commands, logs, failed hypotheses, artifacts, and the smallest next decision required.
 
 ## TensorBoard Dashboard
 
