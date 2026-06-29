@@ -34,6 +34,7 @@ stdout.log
 progress.csv
 episodes.csv
 updates.csv
+tensorboard/ or tb/ with event files
 summary.json
 diagnostic.json or gate_debug_report.md
 checkpoints/latest
@@ -50,6 +51,7 @@ eval_summary.json
 ```
 
 Training and evaluation metrics must remain separate.
+Long training must include TensorBoard event files and a recorded dashboard/logdir command. If MATLAB live monitoring is used, it must read generated CSV files such as `progress.csv` and remain a backup viewer rather than replacing TensorBoard.
 
 ## Markdown Gate
 

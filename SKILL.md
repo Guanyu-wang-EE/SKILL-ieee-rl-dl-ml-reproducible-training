@@ -1,6 +1,6 @@
 ---
 name: ieee-rl-reproducible-training
-description: Use when RL/DRL paper reproduction or energy-system control work needs long training, traceable train/test evaluation, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
+description: Use when RL/DRL paper reproduction or energy-system control work needs long training, mandatory TensorBoard long-run visualization, traceable train/test evaluation, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
 ---
 
 # IEEE RL Reproducible Training
@@ -25,7 +25,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 
 ## Hard Gates
 
-- Do not start long training without a smoke test, resource/GPU/Python/solver check when relevant, dry-run manifest, unique output directory, and live CSV/JSONL/stdout/checkpoint plan.
+- Do not start long training without a smoke test, resource/GPU/Python/solver check when relevant, dry-run manifest, unique output directory, live CSV/JSONL/stdout/checkpoint plan, and TensorBoard event logging/dashboard plan.
 - Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.
 - Generated Markdown must be Chinese-first, technically explicit, cross-linked, and readable by an engineering colleague who did not watch the run.
 - Post-training packs must include README or index entry, main/summary/debug reports, risk analysis, figure/table index, reproducibility manifest with SHA256 and bytes, and explicit missing-output notes.
@@ -38,7 +38,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 
 1. Define the minimum reproducible path: hypothesis, algorithm, environment, seeds, steps, metrics, and outputs.
 2. Before long training, create real-time records and run a smoke test.
-3. During training, write live CSV/JSONL, stdout summaries, TensorBoard events when enabled, and checkpoints.
+3. During long training, write live CSV/JSONL, stdout summaries, TensorBoard events, and checkpoints; use MATLAB CSV monitoring only as the backup live viewer.
 4. After training, run a separate evaluation/test pass with explicit checkpoint, policy mode, test seeds, and metrics.
 5. After valid training/evaluation packages, generate PPT-ready reports, risk notes, figure/table packages, figure quality audit, manifests, and artifact indexes, or explicit missing-artifact notes.
 6. Run the final quality gates, then clean or exclude misleading artifacts according to the project cleanup policy; keep trustworthy successful runs.
@@ -46,7 +46,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 ## Operating Rules
 
 - Do not wait until a run ends to write artifacts.
-- Treat CSV/JSON artifacts as the authoritative reproducibility record. TensorBoard is a dashboard; MATLAB is optional CSV viewing.
+- Treat CSV/JSON artifacts as the authoritative reproducibility record. TensorBoard is the required long-training live dashboard; MATLAB CSV viewing is the backup supervision path, not a reason to run end-to-end blind.
 - Keep train and test records separate.
 - Treat IEEE style as scientific communication, not decoration.
 - Keep generated project documentation Chinese-first with bilingual technical terms at first mention.

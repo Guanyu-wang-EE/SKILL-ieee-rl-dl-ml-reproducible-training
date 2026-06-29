@@ -80,6 +80,10 @@ def check_results(results: Path) -> list[dict[str, str]]:
         findings.append({"type": "missing_artifact_index", "path": str(results)})
     if not find_any(results, ["ppt_index.md", "*colleague*briefing*.md", "*briefing*.md"]):
         findings.append({"type": "missing_ppt_or_colleague_briefing", "path": str(results)})
+    if not find_any(results, ["progress.csv"]):
+        findings.append({"type": "missing_progress_csv_for_live_monitoring", "path": str(results)})
+    if not find_any(results, ["events.out.tfevents*", "*.tfevents*"]):
+        findings.append({"type": "missing_tensorboard_event_files", "path": str(results)})
 
     md_files = list(results.rglob("*.md"))
     if not md_files:

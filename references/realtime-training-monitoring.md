@@ -11,10 +11,10 @@ Use a layered monitoring stack instead of binding reproducibility to one viewer:
 | CSV/JSONL artifacts | Required | Authoritative reproducibility record for audit, recovery, aggregation, and final figures |
 | stdout and `stdout.log` | Required | Lightweight live status, warnings, FPS, and elapsed-time diagnosis |
 | Checkpoints | Required | Recovery and model provenance through `latest`, `best`, and final model files |
-| TensorBoard | Recommended | Preferred online dashboard for multi-run, multi-seed, loss, constraint, and hyperparameter inspection |
-| MATLAB `.m` monitor | Optional | CSV-reading compatibility tool for MATLAB-centered inspection or IEEE plotting workflows |
+| TensorBoard | Required for long training | Default online dashboard for multi-run, multi-seed, loss, constraint, and hyperparameter inspection |
+| MATLAB `.m` monitor | Backup | CSV-reading fallback viewer for MATLAB-centered inspection or when TensorBoard access is blocked |
 
-TensorBoard may replace MATLAB for most online viewing, but it must not replace the authoritative CSV/JSONL records or final IEEE figure generation. Keep MATLAB monitoring optional unless the project, lab workflow, or reviewer-facing reproduction path specifically needs it.
+For long training, do not run end-to-end blind: create TensorBoard event files and a launch/view command before the run starts. TensorBoard must not replace the authoritative CSV/JSONL records or final IEEE figure generation. MATLAB monitoring reads the generated CSV files as the backup live supervision path; it does not justify omitting TensorBoard unless the blocker is explicit and approved.
 
 ## Required Run Files
 
@@ -29,7 +29,7 @@ Every run must write artifacts during training:
 | `config.json` | Start | Reproducible configuration |
 | `run_command.txt` | Start | Exact launch command |
 | `stdout.log` | Real time | Console trace retained for diagnosis |
-| `tensorboard/` or `tb/` | During run when enabled | TensorBoard event files for online dashboards, not the sole scientific record |
+| `tensorboard/` or `tb/` | During long training | TensorBoard event files for online dashboards, not the sole scientific record |
 | `checkpoints/` | During run | `latest` and `best` model states |
 
 `progress.csv` must include at least:
@@ -60,27 +60,28 @@ Warn on abnormalities defined by the current project, such as metric instability
 
 ## TensorBoard Dashboard
 
-- Prefer TensorBoard as the default online dashboard when the project already uses PyTorch, TensorFlow, Stable-Baselines, CleanRL, RLlib, or another compatible training stack.
+- Require TensorBoard as the default online dashboard for long training when the project uses PyTorch, TensorFlow, Stable-Baselines, CleanRL, RLlib, or another compatible training stack.
+- Record the TensorBoard log directory and launch command, for example `tensorboard --logdir <run-root>`, in the run README, `run_command.txt`, or monitoring notes.
 - Log reward, cost, constraint violation, alpha/lambda, actor loss, critic loss, entropy/KL or equivalent policy diagnostics, FPS, and elapsed time using stable tag names.
 - Keep TensorBoard run directories grouped by algorithm, environment, seed, and timestamp so multi-run comparisons remain interpretable.
 - Flush events at a real-time interval that is useful for monitoring without turning event writes into a training bottleneck.
 - Do not treat TensorBoard event files as the only record; mirror scalar values into CSV/JSONL artifacts for reproducibility, aggregation, and publication plots.
 
-## Optional MATLAB Monitor
+## Backup MATLAB Monitor
 
-- Use a `.m` monitor that reads lightweight CSV files when MATLAB-based inspection is useful.
+- Use a `.m` monitor that reads lightweight CSV files as the backup live viewer when MATLAB-based inspection is useful or TensorBoard access is blocked.
 - Plot reward, cost/constraint violation, alpha/lambda, and fps/elapsed as four core views.
 - Keep it visually clean but separate from final IEEE figure generation.
 - Do not depend on the Python training process ending.
 - Do not lock training files or block CSV writers.
-- Use `assets/monitor_training_template.m` as the starting template when enabling this optional monitor.
+- Use `assets/monitor_training_template.m` as the starting template when enabling this backup monitor.
 
 ## Monitoring Modes To Avoid
 
 - Do not rely on final-only plots after training completes.
 - Do not use notebook polling as the primary long-run monitor.
 - Do not rely only on terminal progress bars without structured logs.
-- Do not make MATLAB a hard requirement when TensorBoard plus CSV/JSONL artifacts already provide the needed online inspection and reproducibility path.
+- Do not treat MATLAB as a replacement for TensorBoard in normal long training. It is a CSV-based backup viewer.
 
 ## Checkpoints
 
@@ -128,6 +129,6 @@ Before long training, run a small smoke test that verifies:
 - Environment creation and one or more interactions.
 - CSV files are created and updated.
 - Stdout summaries print in the agreed format.
-- TensorBoard event files are created and readable when TensorBoard logging is enabled.
-- MATLAB can read `progress.csv` while training is active or simulated when the optional MATLAB monitor is used.
+- TensorBoard event files are created and readable.
+- MATLAB can read `progress.csv` while training is active or simulated when the backup MATLAB monitor is used.
 - Checkpoint directory is writable.
