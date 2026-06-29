@@ -7,7 +7,7 @@ Use this reference before claiming any substantial RL/DRL training, pilot, long 
 1. Check code headers.
 2. Check live run/evaluation records.
 3. Check reports and reader usability.
-4. Check figures and tables.
+4. Check figures, figure README, figure quality audit, and tables.
 5. Check manifests and indexes.
 6. Check cleanup/exclusion records.
 7. State remaining missing items instead of silently omitting them.
@@ -65,23 +65,36 @@ Require:
 - train/eval separation;
 - tables with key metrics;
 - figure index;
+- links to figure quick-start README, table directory, risk report, manifest, and validation logs when these exist;
 - warnings and excluded runs;
 - limitations and next plan.
 
 Avoid vague status text such as `looks good` or `training complete` without artifact paths and verification evidence.
 
+For substantial post-training packages, require a reader path that an engineering colleague can follow without the chat transcript:
+
+```text
+README/index -> main report -> summary -> risk report -> figures README -> tables -> manifest -> validation logs
+```
+
 ## Figure Gate
 
 Use `references/ieee-plot-style.md`. Before finalizing figures, check:
 
-- PNG/PDF export exists when data exists;
+- PNG/PDF/SVG export exists when data exists;
+- same-stem PNG/PDF pairs exist for final figures;
+- same-stem PNG/SVG pairs exist for final figures;
+- SVG font mode, font evidence, and vector geometry checks are recorded;
 - font is Times New Roman or a reasonable serif fallback;
 - axis labels include metric names and units when available;
 - x/y limits are not misleading and do not hide important variance;
 - legends do not cover curves;
 - colors are restrained and color-blind safe;
 - captions/report text explain metric, threshold, seed count, and evidence tier;
-- missing columns are recorded in `missing_figures.md`.
+- representative core/risk figures have been visually inspected for text overlap, legend occlusion, blank output, and unreadable density;
+- missing columns are recorded in `missing_figures.md`;
+- `figures*/README.md` tells colleagues which PDF figures to use and how to explain risks;
+- `figure_quality_audit.md` and `figure_quality_audit.csv` exist when a final figure package exists, or the reason they are missing is recorded.
 
 ## Table Gate
 
@@ -107,12 +120,12 @@ Require:
 ```text
 reproducibility_manifest.json
 artifact_index.csv
-ppt_index.md
+ppt_index.md or colleague_briefing.md
 ```
 
 The reproducibility manifest must include SHA256 and byte counts for Markdown reports, figures, tables, validation logs, and checkpoints that are part of the final package.
 
-The PPT index must map each slide to a figure, table, takeaway, and artifact path.
+The PPT index or colleague briefing must map each slide to a figure, table, takeaway, claim boundary, and artifact path.
 
 ## Cleanup Gate
 

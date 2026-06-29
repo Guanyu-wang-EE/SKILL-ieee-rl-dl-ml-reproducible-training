@@ -51,26 +51,53 @@ Use this reference for figures intended to resemble IEEE Transactions on Smart G
 
 ## Export And Manifest
 
-Export final figures as:
+Minimum export gate for final report/PPT figures:
 
 - `PDF` for paper use.
-- `EPS` for paper use when required.
-- `SVG` with font information retained or embedded when the toolchain supports it.
+- `SVG` for editable vector review with font/vector-path validation.
 - `PNG` only as a preview.
+
+Add these when feasible or required by the target venue:
+
+- `EPS` for paper use when required.
 
 For SVG output, prefer genuine font-preserving or font-embedded SVG. If the plotting backend cannot truly embed fonts, use a path-converted SVG fallback and record `svg_font_mode=path_fallback` in the manifest. If fonts are retained or embedded, record `svg_font_mode=embedded`.
 
-Each figure manifest must record:
+Each per-figure manifest must record:
 
-- Figure file paths for PDF, EPS, SVG, and PNG preview.
+- Figure file paths for PDF, SVG, and PNG preview; EPS if generated.
 - Data sources.
 - SHA256 values for figure files and data sources.
 - Generation command.
 - Generation time.
-- SVG font mode: `embedded` or `path_fallback`.
 - Font family and SVG backend.
+- SVG font mode: `embedded` or `path_fallback`.
 - `font_embedding_checked=true` after SVG contents or conversion logs have been inspected.
-- Conversion toolchain when `svg_font_mode=path_fallback`.
+- `svg_vector_geometry_checked=true` after path/polyline geometry has been checked for nonzero dimensions, finite coordinates, and real vector content.
+- Conversion toolchain when SVG uses `svg_font_mode=path_fallback`.
+
+For final figure directories, also produce or record why unavailable:
+
+```text
+figures*/README.md
+figures*/figure_quality_audit.md
+tables*/figure_quality_audit.csv
+figures*/missing_figures.md
+```
+
+Figure quality audit checks:
+
+- every PNG has a same-stem PDF;
+- every PNG has a same-stem SVG;
+- PDF header is valid;
+- SVG has valid XML/SVG header or root;
+- SVG records font mode and passes font embedding/path-fallback evidence checks;
+- SVG vector geometry has finite path/polyline coordinates and is not raster-only;
+- PNG/export DPI is at least 300 when available;
+- image is not blank;
+- labels, legends, and annotations do not overlap important data;
+- risk figures are included, not hidden;
+- missing columns are documented instead of fabricated.
 
 Recommended manifest shape:
 

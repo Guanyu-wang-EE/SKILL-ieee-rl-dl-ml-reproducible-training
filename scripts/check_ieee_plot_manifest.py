@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Validate an IEEE figure manifest for exported files, SHA256 values,
-data sources, generation command, generation time, and SVG font evidence.
+Validate an IEEE figure manifest for required PDF/SVG/PNG exports, SHA256 values,
+data sources, generation command, generation time, SVG font evidence, and vector geometry.
 '''
 
 from __future__ import annotations
@@ -10,12 +10,16 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
+import re
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
 
-REQUIRED_FORMATS = ['pdf', 'eps', 'svg', 'png']
+REQUIRED_FORMATS = ['pdf', 'svg', 'png']
+OPTIONAL_FORMATS = ['eps']
 VALID_SVG_FONT_MODES = {'embedded', 'path_fallback'}
 
 
@@ -126,6 +130,56 @@ def validate_svg(manifest: dict[str, Any], svg_path: Path, failures: list[str]) 
         if not (manifest.get('conversion_toolchain') or manifest.get('svg_conversion_toolchain')):
             failures.append('path_fallback SVG requires conversion_toolchain')
 
+    if manifest.get('svg_vector_geometry_checked') is not True:
+        failures.append('svg_vector_geometry_checked must be true')
+    validate_svg_geometry(svg_path, svg_text, failures)
+
+
+def validate_svg_geometry(svg_path: Path, svg_text: str, failures: list[str]) -> None:
+    try:
+        root = ET.fromstring(svg_path.read_text(encoding='utf-8', errors='ignore'))
+    except Exception as exc:  # noqa: BLE001 - report malformed SVG.
+        failures.append(f'invalid SVG XML: {exc}')
+        return
+
+    if not root.tag.lower().endswith('svg'):
+        failures.append('SVG root element is not svg')
+
+    view_box = root.attrib.get('viewBox') or root.attrib.get('viewbox')
+    if view_box:
+        values = parse_numbers(view_box)
+        if len(values) >= 4 and (values[2] <= 0 or values[3] <= 0):
+            failures.append('SVG viewBox has nonpositive width or height')
+
+    vector_tags = ('<path', '<polyline', '<polygon', '<line', '<rect', '<circle', '<ellipse')
+    if not any(tag in svg_text for tag in vector_tags):
+        failures.append('SVG has no vector geometry tags')
+    if '<image' in svg_text and not any(tag in svg_text for tag in ('<path', '<polyline', '<line')):
+        failures.append('SVG appears raster-only')
+
+    path_values = []
+    for match in re.finditer(r'\sd=["\']([^"\']+)["\']', svg_text):
+        path_values.extend(parse_numbers(match.group(1)))
+    for match in re.finditer(r'\spoints=["\']([^"\']+)["\']', svg_text):
+        path_values.extend(parse_numbers(match.group(1)))
+    if not path_values:
+        failures.append('SVG lacks path/polyline numeric geometry')
+        return
+    if not all(math.isfinite(value) for value in path_values):
+        failures.append('SVG path/polyline geometry contains nonfinite coordinates')
+    if max(path_values) == min(path_values):
+        failures.append('SVG path/polyline geometry has zero numeric range')
+
+
+def parse_numbers(text: str) -> list[float]:
+    values = []
+    for item in re.findall(r'[-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?', text):
+        try:
+            values.append(float(item))
+        except ValueError:
+            continue
+    return values
+
 
 def main() -> int:
     args = parse_args()
@@ -162,6 +216,17 @@ def main() -> int:
         path = as_path(base, value)
         if not path.exists():
             failures.append(f'file does not exist for {fmt}: {path}')
+            continue
+        resolved_files[fmt] = path
+        check_hash(path, collect_hash(manifest, fmt), fmt, failures)
+
+    for fmt in OPTIONAL_FORMATS:
+        value = files.get(fmt)
+        if not value:
+            continue
+        path = as_path(base, value)
+        if not path.exists():
+            failures.append(f'file does not exist for optional {fmt}: {path}')
             continue
         resolved_files[fmt] = path
         check_hash(path, collect_hash(manifest, fmt), fmt, failures)

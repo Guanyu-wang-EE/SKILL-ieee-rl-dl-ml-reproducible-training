@@ -9,6 +9,7 @@ Use this reference after valid RL/DRL training or evaluation packages, especiall
 - Verification log
 - Markdown reports
 - Figures
+- Figure quality audit
 - Tables
 - Missing output protocol
 - Reproducibility manifest
@@ -23,11 +24,12 @@ A run package is complete only when it has:
 
 - training/evaluation artifacts validated or failure recorded;
 - PPT-ready Markdown reports;
-- IEEE-style figures in PNG and PDF when data exists;
+- IEEE-style figures in PNG, PDF, and SVG when data exists;
+- a figure-directory quick-start README and figure quality audit when figures exist;
 - CSV summary tables;
 - reproducibility manifest with SHA256 and byte counts;
 - artifact index;
-- PPT index;
+- PPT index or colleague briefing slide map;
 - `missing_figures.md` or `missing_tables.md` for any required output that cannot be generated from available columns.
 
 Do not fabricate plots, columns, metrics, or statistical claims. Missing data is a reporting result.
@@ -83,10 +85,11 @@ python scripts/check_ieee_plot_manifest.py <figure_manifest.json>
 Generate at minimum:
 
 ```text
+README.md or results/<project_tag>/index.md
 report_single_seed_or_pilot.md
 report_single_seed_or_pilot_summary.md
 debug_and_change_log.md
-index.md
+risk_and_improvement.md
 ```
 
 For a group-meeting long run, also generate:
@@ -94,7 +97,18 @@ For a group-meeting long run, also generate:
 ```text
 report_group_meeting_long.md
 report_group_meeting_long_summary.md
+colleague_briefing.md
+skill_compliance_audit.md
 ```
+
+Reader-usability gate:
+
+- Write Chinese-first for an engineering colleague who did not read the chat.
+- Start with a direct conclusion and evidence tier.
+- Explain what can be claimed and what must not be claimed.
+- Link the reading path in one chain: README/index -> main report -> risk report -> figures README -> tables -> manifest -> validation logs.
+- Put risk analysis in a dedicated Markdown file when warnings, missing outputs, single-seed limits, or scientific caveats exist.
+- Use bilingual first mention for core technical terms, for example 约束违反 (constraint violation, CV).
 
 Main report sections:
 
@@ -142,7 +156,23 @@ known remaining risks
 
 ## Figures
 
-Use `references/ieee-plot-style.md` for styling. Generate PNG and PDF when feasible.
+Use `references/ieee-plot-style.md` for styling. Generate PNG, PDF, and SVG when feasible. If SVG cannot be generated, record the blocker in `missing_figures.md` and do not call the figure package final.
+
+When figures exist, also generate in the figure directory:
+
+```text
+README.md
+figure_quality_audit.md
+missing_figures.md
+```
+
+The figure README is the colleague quick start. It should list:
+
+- which PDF figures to use first for PPT or paper drafts;
+- what each figure proves;
+- what each figure does not prove;
+- risk figures that must be shown, not hidden;
+- the location of `figure_quality_audit.md`, `missing_figures.md`, and the table/manifest entries.
 
 Core figures:
 
@@ -189,6 +219,35 @@ pareto_reward_cost_violation
 pipeline_diagram
 ```
 
+Do not draw a figure when required columns are missing. Record the missing columns and instrumentation needed in `missing_figures.md`.
+
+## Figure Quality Audit
+
+For final/PPT-ready figure folders, write:
+
+```text
+figures*/figure_quality_audit.md
+tables*/figure_quality_audit.csv
+```
+
+At minimum, audit each PNG/PDF/SVG set:
+
+| Check | Required evidence |
+|---|---|
+| PNG/PDF pairing | every PNG has a same-stem PDF |
+| PNG/SVG pairing | every PNG has a same-stem SVG |
+| PDF validity | PDF exists and has a valid PDF header |
+| SVG validity | SVG root/header is valid |
+| SVG font | `svg_font_mode`, `font_embedding_checked`, and font evidence are recorded |
+| SVG vector geometry | vector path/polyline geometry has finite coordinates and is not raster-only |
+| resolution | PNG DPI or export DPI is at least 300 when available |
+| size | preview pixels are large enough to read at target width |
+| nonblank | image is not blank or near-blank |
+| readability | legend, axis labels, and annotations do not overlap important data |
+| manifest | figure audit files are included in artifact index and manifest |
+
+If automated visual checks are not available, manually inspect representative risk/core figures and record the inspection in `figure_quality_audit.md`.
+
 ## Tables
 
 Generate under `tables/`:
@@ -202,6 +261,7 @@ algorithm_comparison_summary.csv
 checkpoint_roundtrip_summary.csv
 warning_summary.csv
 artifact_index.csv
+figure_quality_audit.csv
 ```
 
 Optional tables when diagnostics exist:
@@ -265,6 +325,7 @@ evaluation artifacts
 figures with SHA256 and bytes
 tables with SHA256 and bytes
 Markdown reports with SHA256 and bytes
+figure README and figure quality audit files
 validation logs with SHA256 and bytes
 verification commands and results
 known limitations
@@ -291,6 +352,8 @@ Write:
 ```text
 ppt_index.md
 ```
+
+If the project is better served by a colleague-facing briefing file, `colleague_briefing.md` can satisfy this requirement when it maps slides to figures/tables/takeaways and states claim boundaries.
 
 Use this slide map unless the project defines a better one:
 
@@ -335,6 +398,8 @@ SMOKE ARTIFACT REPORT PASSED
 PILOT ARTIFACT REPORT PASSED
 T4 GROUP-MEETING LONG REPORT PASSED
 ARTIFACT REPORT COMPLETED WITH WARNINGS
+CONTROLLED EXACT SINGLE-SEED LONG REPORT RUN PASSED
+CONTROLLED EXACT SINGLE-SEED LONG REPORT RUN COMPLETED WITH WARNINGS
 NOT READY: <first hard failing gate and evidence>
 ```
 

@@ -13,9 +13,9 @@ Required project documents:
 
 | File | Required content |
 |---|---|
-| `README.md` | Chinese-first narrative, reproduction entry point, key terms with bilingual first mention |
+| `README.md` | Chinese-first narrative, direct conclusion, reproduction entry point, reading order, key artifacts, figure/PDF/SVG guide, risk boundary, key terms with bilingual first mention |
 | `requirements.txt` or environment document | Python, conda env, PyTorch, CUDA, GPU/CPU, package versions, and teammate-machine setup notes |
-| `output.md` | Expert-level result analysis, hypotheses, configurations, tables, IEEE figure index, paper differences, risks, and next-step recommendations |
+| `output.md` | Expert-level result analysis, hypotheses, configurations, tables, IEEE figure index, figure quality evidence, paper differences, risks, and next-step recommendations |
 
 When useful for the local hardware context, include compatibility notes for 4070/i7H machines.
 
@@ -35,6 +35,32 @@ Every credible run or stage must record:
 
 For PPT-ready Markdown packs, figure/table requirements, reproducibility manifests, artifact indexes, PPT indexes, and missing-output notes, use `references/post-training-reporting.md`.
 
+## README Expectations
+
+`README.md` is the project front door, not a changelog dump. It must let a teammate with general engineering background understand:
+
+- direct conclusion and evidence tier;
+- what the current run proves and does not prove;
+- the recommended reading order;
+- exact run directory, reports, figures, tables, manifest, and validation logs;
+- how to reproduce or validate the run;
+- which figures should be used in PPT and whether PDF exists;
+- major risks, missing artifacts, and next steps.
+
+For mature reporting packages, link at least:
+
+```text
+main report
+summary report
+debug/change log
+risk_and_improvement report
+figures README
+figure_quality_audit
+tables directory
+reproducibility manifest
+validation logs
+```
+
 Do not write as if long training has not happened when the true state is plan, running, stopped, failed, or completed. Keep the status explicit.
 
 ## `output.md` Expectations
@@ -47,6 +73,7 @@ Do not write as if long training has not happened when the true state is plan, r
 - Evaluation/test setup, test seeds, policy mode, and whether `best` or `latest` checkpoint was loaded.
 - Run summary and data tables.
 - IEEE figure index when figures are generated.
+- Figure quality audit and missing figure/table notes when reporting packages are generated.
 - `threshold_summary.csv` rows when threshold sweeps are used.
 - Comparison with the target paper or reproduction target.
 - Differences from the paper and plausible causes.

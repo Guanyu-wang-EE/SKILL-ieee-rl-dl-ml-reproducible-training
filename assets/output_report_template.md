@@ -29,7 +29,11 @@
 
 # IEEE 图
 
-列出 PDF/EPS/SVG/PNG 预览、数据源、生成命令、SHA256、SVG 字体模式、font family、SVG backend、字体嵌入检查状态。说明图中 hypothesis、metric、threshold、seed 数，以及线性/对数坐标选择理由。
+列出 PNG/PDF/SVG 图、数据源、生成命令、SHA256、font family、DPI、SVG 字体模式、SVG backend、字体嵌入检查状态、SVG vector geometry 检查状态、figure quality audit 路径。若生成 EPS，再列为期刊增强项。说明图中 hypothesis、metric、threshold、seed 数，以及线性/对数坐标选择理由。
+
+# 图片质量与汇报入口
+
+说明 `figures*/README.md`、`figure_quality_audit.md`、`figure_quality_audit.csv`、`missing_figures.md` 的路径。列出 PPT 优先使用的 PDF 图、每张图能证明什么、不能证明什么，以及必须同步讲的风险图。
 
 # Threshold Summary
 

@@ -1,17 +1,15 @@
 ---
 name: ieee-rl-reproducible-training
-description: Use when RL/DRL paper reproduction or energy-system control work needs long training, traceable train/test evaluation, IEEE TSG/TPS figures, CSV/TensorBoard monitoring, optional MATLAB inspection, Chinese-first reports, reproducible run records, PPT-ready post-training artifacts, SHA256 manifests, artifact/PPT indexes, or cleanup/exclusion of failed or half-finished artifacts.
+description: Use when RL/DRL paper reproduction or energy-system control work needs long training, traceable train/test evaluation, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
 ---
 
 # IEEE RL Reproducible Training
 
 ## Overview
 
-Use this skill to keep RL/DRL reproduction work traceable: live training records, separate train/test evaluation, IEEE-style figures, Chinese-first documentation, and clean final experiment folders.
+Use this skill to keep RL/DRL reproduction work traceable end to end: live training records, separate train/test evaluation, IEEE-style figures, Chinese-first colleague-readable reports, risk analysis, reproducibility manifests, and clean final experiment folders.
 
-Read only the reference files required by the current task. Do not load every reference by default.
-
-## Task Router
+## Hard Router
 
 | User task | Load |
 |---|---|
@@ -24,13 +22,18 @@ Read only the reference files required by the current task. Do not load every re
 | Use MATLAB for live CSV viewing | `references/realtime-training-monitoring.md` and `assets/monitor_training_template.m` |
 | Verify an existing run folder | Use `scripts/validate_run_trace.py` |
 
+Do not load every reference by default. Load only the routed files plus any directly required assets/scripts.
+
 ## Hard Gates
 
-- Generated experiment Python files must have a Chinese overview header; generated `main.py`, `run_*.py`, `train_*.py`, and long-running entry scripts must also include the Buddha blessing header from `assets/python_file_header_templates.md`.
-- Generated Markdown reports must be Chinese-first, technically explicit, and readable by an engineering colleague who did not watch the run.
-- Final figures must follow IEEE-style plotting, use clear axis labels, sensible axis ranges, and export at least PNG/PDF when data exists.
-- Final project folders must be clean: successful runs retained, failed or misleading runs excluded or explicitly cleaned only when authorized.
-- Do not claim completion for substantial training/reporting work until `references/final-quality-gates.md` has been checked or missing items are recorded.
+- Do not start long training without a smoke test, resource/GPU/Python/solver check when relevant, dry-run manifest, unique output directory, and live CSV/JSONL/stdout/checkpoint plan.
+- Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.
+- Generated Markdown must be Chinese-first, technically explicit, cross-linked, and readable by an engineering colleague who did not watch the run.
+- Post-training packs must include README or index entry, main/summary/debug reports, risk analysis, figure/table index, reproducibility manifest with SHA256 and bytes, and explicit missing-output notes.
+- Figures must follow IEEE style, export PNG/PDF/SVG when data exists, validate SVG font handling and vector path geometry, avoid overlap/clutter, and pass a figure quality audit or record why audit is unavailable.
+- Generated experiment Python files must have the Chinese overview header; generated `main.py`, `run_*.py`, `train_*.py`, and long-running entry scripts must also include the Buddha blessing header from `assets/python_file_header_templates.md`.
+- Preserve successful run records. Delete failed/misleading artifacts only when user/project instructions authorize deletion; otherwise mark them excluded with evidence.
+- Missing data is a result. Do not fabricate plots, tables, SOC traces, metrics, baselines, or paper-level claims.
 
 ## Minimal Workflow
 
@@ -38,7 +41,7 @@ Read only the reference files required by the current task. Do not load every re
 2. Before long training, create real-time records and run a smoke test.
 3. During training, write live CSV/JSONL, stdout summaries, TensorBoard events when enabled, and checkpoints.
 4. After training, run a separate evaluation/test pass with explicit checkpoint, policy mode, test seeds, and metrics.
-5. After valid training/evaluation packages, generate PPT-ready reports, figures, tables, manifests, artifact index, and PPT index, or explicit missing-artifact notes.
+5. After valid training/evaluation packages, generate PPT-ready reports, risk notes, figure/table packages, figure quality audit, manifests, and artifact indexes, or explicit missing-artifact notes.
 6. Run the final quality gates, then clean or exclude misleading artifacts according to the project cleanup policy; keep trustworthy successful runs.
 
 ## Operating Rules
@@ -49,7 +52,7 @@ Read only the reference files required by the current task. Do not load every re
 - Treat IEEE style as scientific communication, not decoration.
 - Keep generated project documentation Chinese-first with bilingual technical terms at first mention.
 - Do not invent generic training termination rules. Use project-defined criteria when the project provides them.
-- Do not treat training as complete until post-training reporting artifacts are generated or missing artifacts are documented.
+- Do not treat training as complete until post-training reporting artifacts are generated, cross-linked, quality-audited, or missing artifacts are documented.
 - Do not delete run artifacts unless the user or project instructions explicitly authorize cleanup. If deletion is not authorized, mark failed or misleading outputs as excluded.
 - Preserve successful multi-seed, multi-algorithm, and repeated validation runs with time/seed/script naming.
 - Do not create extra documentation inside this skill folder. Project `README.md`, `requirements.txt`, and `output.md` are outputs guided by the skill, not skill-internal README files.

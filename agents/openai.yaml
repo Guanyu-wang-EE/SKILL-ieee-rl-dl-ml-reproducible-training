@@ -1,4 +1,4 @@
 interface:
   display_name: 'IEEE RL Reproducible Training'
-  short_description: 'Reproducible RL training, IEEE plots, monitoring, and cleanup.'
-  default_prompt: 'Use $ieee-rl-reproducible-training to set up a traceable RL reproduction run with real-time monitoring and IEEE-style outputs.'
+  short_description: 'Reproducible RL training, IEEE plots, post-train reports, risk notes, and audits.'
+  default_prompt: 'Use $ieee-rl-reproducible-training to run or close an RL reproduction with live records, separate evaluation, IEEE-style figures, figure quality audit, colleague-readable reports, and a SHA256 manifest.'

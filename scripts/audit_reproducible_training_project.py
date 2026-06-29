@@ -1,7 +1,7 @@
 """中文概览: RL/DRL 复现实验最终产物轻量审计.
 
 用途: 检查实验项目是否遗漏中文 Python 头注释、佛头、PPT-ready 报告、图表、
-表格、manifest、artifact index 和 PPT index.
+表格、figure quality audit、manifest、artifact index 和 PPT/colleague briefing index.
 创建日期: 2026-06-29.
 输入文件/CSV: 项目根目录和 results 目录.
 输出文件: 可选 JSON 审计报告.
@@ -71,30 +71,53 @@ def is_entry_script(path: Path) -> bool:
 
 def check_results(results: Path) -> list[dict[str, str]]:
     findings: list[dict[str, str]] = []
-    required_files = [
-        "reproducibility_manifest.json",
-        "artifact_index.csv",
-        "ppt_index.md",
-    ]
-    for rel in required_files:
-        if not (results / rel).exists():
-            findings.append({"type": "missing_required_reporting_artifact", "path": rel})
+    if not results.exists():
+        return [{"type": "missing_results_dir", "path": str(results)}]
 
-    md_files = list(results.glob("*.md")) if results.exists() else []
+    if not find_any(results, ["*reproducibility_manifest.json", "*manifest*.json"]):
+        findings.append({"type": "missing_reproducibility_manifest", "path": str(results)})
+    if not find_any(results, ["artifact_index.csv"]):
+        findings.append({"type": "missing_artifact_index", "path": str(results)})
+    if not find_any(results, ["ppt_index.md", "*colleague*briefing*.md", "*briefing*.md"]):
+        findings.append({"type": "missing_ppt_or_colleague_briefing", "path": str(results)})
+
+    md_files = list(results.rglob("*.md"))
     if not md_files:
         findings.append({"type": "missing_markdown_reports", "path": str(results)})
+    elif not any("风险" in read_text(path) or "risk" in path.name.lower() for path in md_files):
+        findings.append({"type": "missing_explicit_risk_analysis", "path": str(results)})
 
-    figures = results / "figures"
-    has_png = figures.exists() and any(figures.glob("*.png"))
-    has_pdf = figures.exists() and any(figures.glob("*.pdf"))
-    if not (has_png and has_pdf) and not (results / "missing_figures.md").exists():
-        findings.append({"type": "missing_figures_or_missing_figures_note", "path": str(figures)})
+    figure_dirs = [path for path in results.rglob("*") if path.is_dir() and (any(path.glob("*.png")) or any(path.glob("*.pdf")))]
+    if not figure_dirs and not find_any(results, ["missing_figures.md"]):
+        findings.append({"type": "missing_figures_or_missing_figures_note", "path": str(results)})
+    for figures in figure_dirs:
+        pngs = list(figures.glob("*.png"))
+        pdfs = {path.stem for path in figures.glob("*.pdf")}
+        svgs = {path.stem for path in figures.glob("*.svg")}
+        for png in pngs:
+            if png.stem not in pdfs:
+                findings.append({"type": "missing_same_stem_pdf", "path": str(png)})
+            if png.stem not in svgs:
+                findings.append({"type": "missing_same_stem_svg", "path": str(png)})
+        if pngs and not (figures / "README.md").exists():
+            findings.append({"type": "missing_figure_quickstart_readme", "path": str(figures)})
+        if pngs and not (figures / "figure_quality_audit.md").exists():
+            findings.append({"type": "missing_figure_quality_audit_md", "path": str(figures)})
+        if pngs and not find_any(results, ["figure_quality_audit.csv"]):
+            findings.append({"type": "missing_figure_quality_audit_csv", "path": str(results)})
 
-    tables = results / "tables"
-    has_tables = tables.exists() and any(tables.glob("*.csv"))
-    if not has_tables and not (results / "missing_tables.md").exists():
-        findings.append({"type": "missing_tables_or_missing_tables_note", "path": str(tables)})
+    has_tables = any(path.name != "artifact_index.csv" for path in results.rglob("*.csv"))
+    if not has_tables and not find_any(results, ["missing_tables.md"]):
+        findings.append({"type": "missing_tables_or_missing_tables_note", "path": str(results)})
     return findings
+
+
+def find_any(root: Path, patterns: list[str]) -> bool:
+    return any(any(root.rglob(pattern)) for pattern in patterns)
+
+
+def read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8", errors="ignore")
 
 
 if __name__ == "__main__":
