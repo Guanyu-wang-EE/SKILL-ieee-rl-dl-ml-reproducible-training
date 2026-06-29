@@ -1,6 +1,6 @@
 # Real-Time Training Monitoring
 
-Use this reference before launching long RL/DRL runs. Do not design training code that only saves artifacts at run end.
+Use this reference before launching long RL/DRL runs or unattended repository long goals. Do not design training code that only saves artifacts at run end.
 
 ## Monitoring Stack
 
@@ -16,6 +16,17 @@ Use a layered monitoring stack instead of binding reproducibility to one viewer:
 
 For long training, do not run end-to-end blind: create TensorBoard event files and a launch/view command before the run starts. TensorBoard must not replace the authoritative CSV/JSONL records or final IEEE figure generation. MATLAB monitoring reads the generated CSV files as the backup live supervision path; it does not justify omitting TensorBoard unless the blocker is explicit and approved.
 
+## Repository Long-Goal Entry
+
+Before editing or launching an unattended long goal:
+
+1. Run `git status --short --branch` and record branch plus dirty state.
+2. Read `AGENTS.md`, `README.md`, relevant plan/index/protocol docs, configs, tests, and target source files.
+3. Identify the first incomplete required gate or task.
+4. Do not invent results, metrics, APIs, files, commands, or paper claims.
+
+Ask only for destructive actions, scientific-semantics changes, major dependencies, architecture rewrites, unrelated expensive sweeps, or commit/push when not explicitly authorized. Otherwise choose the smallest conservative option from project docs and log the assumption.
+
 ## Required Run Files
 
 Every run must write artifacts during training:
@@ -28,7 +39,9 @@ Every run must write artifacts during training:
 | `summary.json` | Final | Final status and aggregate metrics |
 | `config.json` | Start | Reproducible configuration |
 | `run_command.txt` | Start | Exact launch command |
+| `git_commit.txt` | Start | Source revision and dirty-state note |
 | `stdout.log` | Real time | Console trace retained for diagnosis |
+| `diagnostic.json` or `gate_debug_report.md` | During or final | Gate/debug evidence and stopped-run diagnosis |
 | `tensorboard/` or `tb/` | During long training | TensorBoard event files for online dashboards, not the sole scientific record |
 | `checkpoints/` | During run | `latest` and `best` model states |
 
@@ -39,6 +52,26 @@ timestamp, algo, seed, env, step, episode, reward, cost, violation, alpha/lambda
 ```
 
 Use separate columns such as `alpha` and `lambda` when both exist; do not create ambiguous merged semantics in the actual CSV.
+
+## Scientific Gate Records
+
+Every gate must state:
+
+- scientific claim;
+- scope;
+- metric;
+- tolerance;
+- observable class;
+- verdict;
+- artifacts;
+- allowed next actions;
+- blocked next actions.
+
+Allowed verdicts are exactly `PASS`, `PROVISIONAL PASS`, `FAIL`, `INCONCLUSIVE`, `BLOCKED`, and `NOT RUN`.
+
+Allowed observable classes are `primary signal`, `scientific invariant`, `algorithmic assumption`, `evaluation evidence`, and `diagnostic-only`.
+
+Diagnostic-only failures do not fail the whole goal unless they affect learning signal, safety semantics, evaluation validity, or a locked claim. A failed gate blocks phase advancement, not the whole goal.
 
 ## Stdout Discipline
 
@@ -54,9 +87,22 @@ Print a training summary every 10 episodes or at a fixed step interval:
 [train] env=CarCircle algo=ccpo seed=0 step=12000 ep=38 reward=-34.2 cost=1.8 cv=0.03 alpha=0.72 fps=820 elapsed=00:14:21
 ```
 
-Use `[warn]` for project-defined abnormal events. Accept `[progress]` for non-episode progress summaries.
+Use `[warn]` for project-defined abnormal events, `[stop]` when stopping a bad run early, and `[progress]` for non-episode progress summaries.
 
 Warn on abnormalities defined by the current project, such as metric instability, artifact update failures, abnormal fps, or environment interaction errors.
+
+## Three-Cycle Debug Rule
+
+On any gate, test, or training failure, do not stop immediately. Run at most three distinct-hypothesis cycles without asking routine questions. Each cycle must:
+
+1. reproduce the failure;
+2. locate the first incorrect value;
+3. state one concrete hypothesis;
+4. run one minimal test;
+5. apply one minimal patch when supported;
+6. rerun the narrow test, gate, or regression check.
+
+After three failed distinct hypotheses, mark `BLOCKED` with commands, logs, failed hypotheses, artifacts, and the smallest next decision required.
 
 ## TensorBoard Dashboard
 
@@ -82,6 +128,12 @@ Warn on abnormalities defined by the current project, such as metric instability
 - Do not use notebook polling as the primary long-run monitor.
 - Do not rely only on terminal progress bars without structured logs.
 - Do not treat MATLAB as a replacement for TensorBoard in normal long training. It is a CSV-based backup viewer.
+
+## Bad Run Stop And Exclusion
+
+Stop and record bad runs early when they show NaN/Inf, OOM, exploding alpha/lambda, non-declining constraint violation, reward collapse, invalid transitions, stalled `progress.csv`, abnormal FPS, or checkpoint write/read failure. Record the stop reason in `summary.json` plus `diagnostic.json` or `gate_debug_report.md`.
+
+Do not average failed, infeasible, stopped, smoke, short, or pilot runs into valid performance means. Keep them as diagnostic evidence or mark them excluded according to `references/project-hygiene-cleanup.md`.
 
 ## Checkpoints
 
@@ -131,4 +183,8 @@ Before long training, run a small smoke test that verifies:
 - Stdout summaries print in the agreed format.
 - TensorBoard event files are created and readable.
 - MATLAB can read `progress.csv` while training is active or simulated when the backup MATLAB monitor is used.
-- Checkpoint directory is writable.
+- Checkpoint write/read round trip works.
+
+## Final Report Contract
+
+Final reports must separate facts, assumptions, inferences, and residual risks. Include commands, seeds, configs, commits, output paths, gate verdicts, and artifact manifests. Before claiming completion, run `references/final-quality-gates.md`.
