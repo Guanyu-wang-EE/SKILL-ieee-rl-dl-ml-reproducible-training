@@ -1,5 +1,7 @@
 # IEEE RL Reproducible Training Skill
 
+<p align="right"><strong>English</strong> | <a href="README_zh.md">简体中文</a></p>
+
 A reproducible reinforcement-learning training skill for traceable experiments, separated train/test records, IEEE-style figures, and final artifact audits.
 
 This repository is the Git-backed source mirror for the skill. Repository documentation belongs here; installed runtime copies should stay lean and contain only files needed for execution.
