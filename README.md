@@ -53,6 +53,7 @@ Do not load every reference by default. The skill is designed as a compact route
 - Do not start long training without smoke tests, resource checks, live logging, checkpoints, and a TensorBoard dashboard plan.
 - Do not claim completion until training records and evaluation records are separated.
 - Do not advance a phase after a failed scientific gate; use the five-cycle debug rule and record evidence before marking `BLOCKED`.
+- When code, tests, execution configs, or debug patches changed, close with Ponytail-style minimality review and Brooks-style code/test diagnosis.
 - Do not compare shaped training-objective rewards across methods as performance evidence.
 - Post-training reward comparisons must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale.
 - Root project `README.md` must be a navigation page with relative links to reports, figures, tables, code, configs, runs, validation logs, manifests, audits, and missing-output notes.
@@ -67,7 +68,7 @@ Do not load every reference by default. The skill is designed as a compact route
 | [`references/reproducibility-recordkeeping.md`](references/reproducibility-recordkeeping.md) | Writing or auditing project `README.md`, `requirements.txt`, `output.md`, run records, Python headers, and reproducibility notes |
 | [`references/post-training-reporting.md`](references/post-training-reporting.md) | Generating reports, figures, tables, artifact index, reproducibility manifest, PPT index, colleague briefing, missing-output notes |
 | [`references/ieee-plot-style.md`](references/ieee-plot-style.md) | Creating or reviewing IEEE-style figures, captions, SVG/PDF/PNG exports, figure manifests |
-| [`references/final-quality-gates.md`](references/final-quality-gates.md) | Final audit before declaring a run, report, package, or project complete |
+| [`references/final-quality-gates.md`](references/final-quality-gates.md) | Final audit before declaring a run, report, package, or project complete; includes closure review when code/tests/debug patches changed |
 | [`references/project-hygiene-cleanup.md`](references/project-hygiene-cleanup.md) | Cleaning or excluding failed, misleading, half-finished, or junk artifacts while preserving trustworthy successful runs |
 
 ## Script Index

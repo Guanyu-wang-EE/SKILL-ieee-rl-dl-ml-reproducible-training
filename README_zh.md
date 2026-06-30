@@ -53,6 +53,7 @@
 - 没有冒烟测试、资源检查、实时日志、checkpoint 与 TensorBoard 仪表盘计划，不得开始长训练。
 - 训练记录与评估记录未分离前，不得声明完成。
 - 科学 gate 失败后不得推进阶段；必须使用五循环调试规则并记录证据，再标记 `BLOCKED`。
+- 当代码、测试、执行配置或 debug 补丁发生变化时，收口阶段必须加入 Ponytail-style 最小化审查与 Brooks-style 代码/测试诊断。
 - 不得把不同方法各自的 shaped training-objective reward 当作性能证据直接互比。
 - 训练后奖励比较必须使用同 tier 原始环境奖励差值，例如同一尺度的环境 `step()` reward 或 `eval_episodes.csv:reward`。
 - 项目根 `README.md` 必须是导航页，用相对链接索引报告、图件、表格、代码、配置、运行记录、验证日志、清单、审计与缺失产物说明。
@@ -67,7 +68,7 @@
 | [`references/reproducibility-recordkeeping.md`](references/reproducibility-recordkeeping.md) | 撰写或审计项目 `README.md`、`requirements.txt`、`output.md`、运行记录、Python 头注释与复现说明 |
 | [`references/post-training-reporting.md`](references/post-training-reporting.md) | 生成报告、图件、表格、artifact index、reproducibility manifest、PPT index、colleague briefing、缺失产物说明 |
 | [`references/ieee-plot-style.md`](references/ieee-plot-style.md) | 创建或审查 IEEE 风格图件、caption、SVG/PDF/PNG 导出、figure manifest |
-| [`references/final-quality-gates.md`](references/final-quality-gates.md) | 在声明 run、报告、产物包或项目完成前进行最终审计 |
+| [`references/final-quality-gates.md`](references/final-quality-gates.md) | 在声明 run、报告、产物包或项目完成前进行最终审计；代码/测试/debug 补丁变化时也覆盖收口审查 |
 | [`references/project-hygiene-cleanup.md`](references/project-hygiene-cleanup.md) | 清理或排除失败、误导、半成品或垃圾产物，同时保留可信成功运行 |
 
 ## 脚本索引

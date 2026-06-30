@@ -95,14 +95,28 @@ Warn on abnormalities defined by the current project, such as metric instability
 
 ## Five-Cycle Debug Rule
 
-On any gate, test, or training failure, do not stop immediately. Run at most five distinct-hypothesis cycles without asking routine questions. Each cycle must:
+On any gate, test, or training failure, do not stop immediately. Run at most five distinct-hypothesis cycles without asking routine questions.
+
+Use a Brooks-style diagnosis record before each patch: `Symptom`, `Source`, `Consequence`, and `Remedy`. Do not suggest or apply a remedy before the source and consequence are stated.
+
+Each cycle must write or update `gate_debug_report.md` or `diagnostic.json` with:
+
+```text
+cycle, symptom, source_artifact_or_file, first_incorrect_value, consequence, hypothesis, minimal_test_command, patch_summary, rerun_command, verdict, next_action
+```
+
+Each cycle must:
 
 1. reproduce the failure;
 2. locate the first incorrect value;
-3. state one concrete hypothesis;
+3. state one concrete hypothesis that is distinct from prior cycles;
 4. run one minimal test;
-5. apply one minimal patch when supported;
+5. apply one minimal patch when the test supports the hypothesis;
 6. rerun the narrow test, gate, or regression check.
+
+A cycle does not count if it only reruns the same command, changes presentation/reporting while the first incorrect value remains upstream, or broad-refactors code without a narrow failure source. For code failures, inspect sibling callers or shared config entry points before patching so the fix lands at the smallest shared source, not only the observed caller.
+
+Do not install or require external review plugins during a long run only to satisfy this rule. If Brooks Lint is already available and the failure is code or test quality related, it may be used as an optional review pass; its absence is not a blocker because this skill carries the required debug structure itself.
 
 After five failed distinct hypotheses, mark `BLOCKED` with commands, logs, failed hypotheses, artifacts, and the smallest next decision required.
 

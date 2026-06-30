@@ -10,8 +10,9 @@ Use this reference before claiming any substantial RL/DRL training, pilot, long 
 4. Check figures, figure README, figure quality audit, and tables.
 5. Check manifests and indexes.
 6. Check `skill_compliance_audit.md`.
-7. Check cleanup/exclusion records.
-8. State remaining missing items instead of silently omitting them.
+7. Check closure review when code, tests, or debug patches changed.
+8. Check cleanup/exclusion records.
+9. State remaining missing items instead of silently omitting them.
 
 ## Code Header Gate
 
@@ -53,6 +54,8 @@ eval_summary.json
 
 Training and evaluation metrics must remain separate.
 Long training must include TensorBoard event files and a recorded dashboard/logdir command. If MATLAB live monitoring is used, it must read generated CSV files such as `progress.csv` and remain a backup viewer rather than replacing TensorBoard.
+
+If any gate, test, or training failure triggered debug cycles, `diagnostic.json` or `gate_debug_report.md` must record each cycle with `cycle, symptom, source_artifact_or_file, first_incorrect_value, consequence, hypothesis, minimal_test_command, patch_summary, rerun_command, verdict, next_action`. Missing fields fail the debug audit gate.
 
 Reward comparisons, algorithm rankings, PPT takeaways, and paper-facing claims must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale. If only shaped training-objective rewards exist, mark the comparison `NOT READY` and keep those curves diagnostic-only.
 
@@ -139,6 +142,14 @@ The reproducibility manifest must include SHA256 and byte counts for Markdown re
 The PPT index or colleague briefing must map each slide to a figure, table, takeaway, claim boundary, and artifact path.
 
 `skill_compliance_audit.md` must include a Markdown table with `gate_id, requirement, evidence_path, command, verdict, missing_reason` so final readiness is machine-checkable.
+
+## Closure Review Gate
+
+Run this gate only when the work changed code, tests, execution-affecting configs, or debug patches. For documentation-only result packaging, state `NOT APPLICABLE`.
+
+1. Ponytail pass: every changed file maps to the failed gate or requested output; no new dependency, abstraction, config surface, or broad refactor was added unless required; unrelated user changes were preserved.
+2. Brooks pass: record material code/test findings as `Symptom`, `Source`, `Consequence`, and `Remedy`; fix blockers that affect learning signal, safety semantics, evaluation validity, reproducibility, or locked claims.
+3. Residual risk pass: record unfixed non-blockers with file paths and evidence. If Brooks Lint is already available, it may be used for this review; do not install it only to satisfy this gate.
 
 ## Cleanup Gate
 
