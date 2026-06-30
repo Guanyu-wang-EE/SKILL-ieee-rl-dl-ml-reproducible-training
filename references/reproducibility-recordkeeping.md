@@ -13,7 +13,7 @@ Required project documents:
 
 | File | Required content |
 |---|---|
-| `README.md` | Chinese-first narrative, direct conclusion, reproduction entry point, reading order, key artifacts, figure/PDF/SVG guide, risk boundary, key terms with bilingual first mention |
+| `README.md` | Chinese-first navigation page, direct conclusion, reproduction entry point, reading order, key artifacts, figure/PDF/SVG guide, risk boundary, key terms with bilingual first mention |
 | `requirements.txt` or environment document | Python, conda env, PyTorch, CUDA, GPU/CPU, package versions, and teammate-machine setup notes |
 | `output.md` | Expert-level result analysis, hypotheses, configurations, tables, IEEE figure index, figure quality evidence, paper differences, risks, and next-step recommendations |
 
@@ -37,7 +37,7 @@ For PPT-ready Markdown packs, figure/table requirements, reproducibility manifes
 
 ## README Expectations
 
-`README.md` is the project front door, not a changelog dump. It must let a teammate with general engineering background understand:
+Root `README.md` is the project navigation page, not only an introduction or changelog dump. Use GitHub-safe relative links so the same links work locally and online. It must let a teammate with general engineering background understand:
 
 - direct conclusion and evidence tier;
 - what the current run proves and does not prove;
@@ -60,6 +60,22 @@ tables directory
 reproducibility manifest
 validation logs
 ```
+
+Root README navigation must cover these locations with relative links when available, or state `NOT AVAILABLE: <reason>` when not produced:
+
+```text
+subdirectory READMEs: figures/README.md, tensorboard_events/README.md, or equivalents
+reports: index, formal report, summary, ppt_index.md, colleague_briefing.md, risk report, debug/change log
+figures: figures/ directory, figure README, figure_quality_audit, missing_figures.md
+tables: tables/ directory, algorithm_comparison_summary.csv, run_summary.csv, eval_summary.csv, constraint_violation_summary.csv, artifact_index.csv
+code: src/, scripts/, training entry, evaluation entry, post-train artifact generation script
+configs: commands/configs/ or the project config directory
+runs: runs/, progress.csv, stdout.log, checkpoints/, TensorBoard event directory
+reproducibility and audit: reproducibility_manifest.json, artifact_index.csv, validation_logs/, skill_compliance_audit.md, completion_audit.md when used
+missing outputs: missing_figures.md, missing_tables.md
+```
+
+Do not silently omit a missing category. Link `missing_figures.md` or `missing_tables.md` for missing figure/table packages; for other unavailable categories, write `NOT AVAILABLE` plus the reason.
 
 Do not write as if long training has not happened when the true state is plan, running, stopped, failed, or completed. Keep the status explicit.
 

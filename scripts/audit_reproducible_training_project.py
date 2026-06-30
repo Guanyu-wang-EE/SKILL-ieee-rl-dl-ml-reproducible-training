@@ -1,7 +1,7 @@
 """中文概览: RL/DRL 复现实验最终产物轻量审计.
 
-用途: 检查实验项目是否遗漏中文 Python 头注释、佛头、PPT-ready 报告、图表、
-表格、figure quality audit、manifest、artifact index 和 PPT/colleague briefing index.
+用途: 检查实验项目是否遗漏中文 Python 头注释、佛头、根 README 导航、PPT-ready
+报告、图表、表格、figure quality audit、manifest、artifact index 和 PPT/colleague briefing index.
 创建日期: 2026-06-29.
 输入文件/CSV: 项目根目录和 results 目录.
 输出文件: 可选 JSON 审计报告.
@@ -17,6 +17,7 @@ import csv
 import json
 import re
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 
 HEADER_MARKERS = ("中文概览", "中文为主总览")
@@ -40,6 +41,18 @@ HIGH_RISK_CLAIMS = (
     "safe policy",
     "state-of-the-art",
 )
+MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+README_NAVIGATION_CATEGORIES = {
+    "figures": ("figures", "figure_quality_audit", "missing_figures"),
+    "tables": ("tables", "algorithm_comparison", "run_summary", "eval_summary", "constraint_violation", "artifact_index"),
+    "scripts": ("scripts",),
+    "src": ("src",),
+    "configs": ("configs", "commands", "config"),
+    "runs": ("runs", "progress.csv", "stdout.log", "checkpoints", "tensorboard"),
+    "results": ("results", "index.md", "report", "summary"),
+    "validation": ("validation_logs", "skill_compliance_audit", "completion_audit"),
+    "manifest": ("reproducibility_manifest", "artifact_index"),
+}
 
 
 def main() -> None:
@@ -53,7 +66,8 @@ def main() -> None:
     results = Path(args.results_dir).resolve()
     findings = []
     findings.extend(check_python_headers(root))
-    findings.extend(check_results(results))
+    findings.extend(check_root_readme_navigation(root))
+    findings.extend(check_results(root, results))
     verdict = "PASS"
     if any(item.get("severity") == "FAIL" for item in findings):
         verdict = "FAIL"
@@ -95,7 +109,7 @@ def is_entry_script(path: Path) -> bool:
     return name == "main.py" or name.startswith("run_") or name.startswith("train_") or "long" in name
 
 
-def check_results(results: Path) -> list[dict[str, str]]:
+def check_results(root: Path, results: Path) -> list[dict[str, str]]:
     findings: list[dict[str, str]] = []
     if not results.exists():
         return [finding("FAIL", "missing_results_dir", str(results))]
@@ -111,9 +125,9 @@ def check_results(results: Path) -> list[dict[str, str]]:
         findings.append(finding("FAIL", "missing_skill_compliance_audit", str(results)))
     else:
         findings.extend(check_skill_compliance_audit(compliance_files[0]))
-    if not find_any(results, ["progress.csv"]):
+    if not find_any(results, ["progress.csv"]) and not find_any(root, ["progress.csv"]):
         findings.append(finding("FAIL", "missing_progress_csv_for_live_monitoring", str(results)))
-    if not find_any(results, ["events.out.tfevents*", "*.tfevents*"]):
+    if not find_any(results, ["events.out.tfevents*", "*.tfevents*"]) and not find_any(root, ["events.out.tfevents*", "*.tfevents*"]):
         findings.append(finding("FAIL", "missing_tensorboard_event_files", str(results)))
 
     md_files = list(results.rglob("*.md"))
@@ -147,6 +161,44 @@ def check_results(results: Path) -> list[dict[str, str]]:
         findings.append(finding("FAIL", "missing_tables_or_missing_tables_note", str(results)))
     findings.extend(check_algorithm_comparison(results))
     findings.extend(check_missing_notes(results))
+    return findings
+
+
+def check_root_readme_navigation(root: Path) -> list[dict[str, str]]:
+    findings: list[dict[str, str]] = []
+    readme = root / "README.md"
+    if not readme.exists():
+        return [finding("FAIL", "missing_root_readme_navigation", str(readme))]
+
+    text = read_text(readme)
+    links = list(extract_markdown_links(text))
+    if not links:
+        findings.append(finding("FAIL", "root_readme_has_no_navigation_links", str(readme)))
+
+    local_targets: list[str] = []
+    for raw_target in links:
+        target = normalize_markdown_target(raw_target)
+        if not target or is_external_or_anchor(target):
+            continue
+        if is_absolute_local_link(target):
+            findings.append(finding("FAIL", "root_readme_uses_non_relative_link", str(readme), target))
+            continue
+        local_targets.append(target.lower().replace("\\", "/"))
+        path_part = strip_fragment_and_query(target)
+        if not path_part:
+            continue
+        candidate = (readme.parent / unquote(path_part)).resolve()
+        if not candidate.exists():
+            findings.append(finding("FAIL", "root_readme_broken_relative_link", str(readme), target))
+
+    link_blob = "\n".join(local_targets)
+    text_blob = text.lower()
+    for category, tokens in README_NAVIGATION_CATEGORIES.items():
+        if any(token in link_blob for token in tokens):
+            continue
+        if has_not_available_reason(text_blob, category, tokens):
+            continue
+        findings.append(finding("FAIL", "root_readme_missing_navigation_category", str(readme), category))
     return findings
 
 
@@ -206,6 +258,45 @@ def check_missing_notes(results: Path) -> list[dict[str, str]]:
 
 def find_any(root: Path, patterns: list[str]) -> bool:
     return any(any(root.rglob(pattern)) for pattern in patterns)
+
+
+def extract_markdown_links(text: str):
+    for match in MARKDOWN_LINK_RE.finditer(text):
+        yield match.group(1)
+
+
+def normalize_markdown_target(raw_target: str) -> str:
+    target = raw_target.strip()
+    if target.startswith("<") and ">" in target:
+        target = target[1:target.index(">")]
+    elif ' "' in target:
+        target = target.split(' "', 1)[0]
+    elif " '" in target:
+        target = target.split(" '", 1)[0]
+    return target.strip()
+
+
+def is_external_or_anchor(target: str) -> bool:
+    if target.startswith("#"):
+        return True
+    scheme = urlsplit(target).scheme.lower()
+    return scheme in {"http", "https", "mailto", "tel"}
+
+
+def is_absolute_local_link(target: str) -> bool:
+    return Path(target).is_absolute() or bool(re.match(r"^[a-zA-Z]:[\\/]", target))
+
+
+def strip_fragment_and_query(target: str) -> str:
+    return target.split("#", 1)[0].split("?", 1)[0].strip()
+
+
+def has_not_available_reason(text: str, category: str, tokens: tuple[str, ...]) -> bool:
+    if "not available" not in text:
+        return False
+    window = re.compile(r"not available.{0,120}(" + "|".join(re.escape(token) for token in (category, *tokens)) + ")", re.IGNORECASE | re.DOTALL)
+    reverse = re.compile(r"(" + "|".join(re.escape(token) for token in (category, *tokens)) + r").{0,120}not available", re.IGNORECASE | re.DOTALL)
+    return bool(window.search(text) or reverse.search(text))
 
 
 def read_text(path: Path) -> str:

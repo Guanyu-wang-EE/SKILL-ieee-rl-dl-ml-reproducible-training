@@ -30,6 +30,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 - Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.
 - Do not advance a phase after a failed scientific gate. Run the five-cycle debug rule from `references/realtime-training-monitoring.md`, then mark `BLOCKED` with evidence if still unresolved.
 - Post-training reward comparisons must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale. Do not compare shaped training-objective rewards across methods as performance claims.
+- Root project `README.md` must be a navigation page with relative links to reports, figures, tables, code, configs, runs, validation, manifests, and missing-output notes; do not leave it as only an introduction or changelog.
 - Generated Markdown must be Chinese-first, technically explicit, cross-linked, and readable by an engineering colleague who did not watch the run.
 - Post-training packs must include README or index entry, main/summary/debug reports, risk analysis, figure/table index, reproducibility manifest with SHA256 and bytes, and explicit missing-output notes.
 - Figures must follow IEEE style, export PNG/PDF/SVG when data exists, validate SVG font handling and vector path geometry, avoid overlap/clutter, and pass a figure quality audit or record why audit is unavailable.

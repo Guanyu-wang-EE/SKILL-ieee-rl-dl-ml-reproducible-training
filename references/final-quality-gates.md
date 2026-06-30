@@ -62,6 +62,8 @@ Reward comparisons, algorithm rankings, PPT takeaways, and paper-facing claims m
 
 Reports must be Chinese-first unless the user asks otherwise. They must be usable by a technically literate engineering colleague without the chat transcript.
 
+Root `README.md` must be a navigation page, not only an introduction or changelog. It must use relative links that resolve locally and cover reports, figures, tables, code, configs, runs, validation logs, manifests, audit files, and missing-output notes, or mark unavailable categories as `NOT AVAILABLE` with a reason.
+
 Require:
 
 - direct conclusion;
