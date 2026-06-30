@@ -1,6 +1,6 @@
 ---
 name: ieee-rl-reproducible-training
-description: Use when RL/DRL paper reproduction or energy-system control work needs unattended long-goal execution, long training, mandatory TensorBoard long-run visualization, traceable train/test evaluation, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
+description: Use when RL/DRL paper reproduction or energy-system control work needs unattended long-goal execution, long training, mandatory TensorBoard long-run visualization, traceable train/test evaluation, same-tier raw environment reward delta comparisons, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
 ---
 
 # IEEE RL Reproducible Training
@@ -29,6 +29,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 - Do not start an unattended repository long goal without recording `git status --short --branch`, reading `AGENTS.md`, `README.md`, relevant plan/index/protocol docs, configs, tests, and target source files, and identifying the first incomplete required gate.
 - Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.
 - Do not advance a phase after a failed scientific gate. Run the five-cycle debug rule from `references/realtime-training-monitoring.md`, then mark `BLOCKED` with evidence if still unresolved.
+- Post-training reward comparisons must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale. Do not compare shaped training-objective rewards across methods as performance claims.
 - Generated Markdown must be Chinese-first, technically explicit, cross-linked, and readable by an engineering colleague who did not watch the run.
 - Post-training packs must include README or index entry, main/summary/debug reports, risk analysis, figure/table index, reproducibility manifest with SHA256 and bytes, and explicit missing-output notes.
 - Figures must follow IEEE style, export PNG/PDF/SVG when data exists, validate SVG font handling and vector path geometry, avoid overlap/clutter, and pass a figure quality audit or record why audit is unavailable.

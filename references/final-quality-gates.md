@@ -53,6 +53,8 @@ eval_summary.json
 Training and evaluation metrics must remain separate.
 Long training must include TensorBoard event files and a recorded dashboard/logdir command. If MATLAB live monitoring is used, it must read generated CSV files such as `progress.csv` and remain a backup viewer rather than replacing TensorBoard.
 
+Reward comparisons, algorithm rankings, PPT takeaways, and paper-facing claims must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale. If only shaped training-objective rewards exist, mark the comparison `NOT READY` and keep those curves diagnostic-only.
+
 ## Markdown Gate
 
 Reports must be Chinese-first unless the user asks otherwise. They must be usable by a technically literate engineering colleague without the chat transcript.

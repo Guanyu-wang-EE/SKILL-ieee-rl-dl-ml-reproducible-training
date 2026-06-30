@@ -125,7 +125,7 @@ Main report sections:
 11. training configuration;
 12. fixed tier, steps, episodes, and seeds;
 13. inherited passed gates;
-14. reward curve summary;
+14. reward curve summary, with cross-method claims only from same-tier raw environment reward delta;
 15. cost curve summary;
 16. constraint-violation summary;
 17. evaluation by budget or threshold;
@@ -153,6 +153,12 @@ fixed seeds
 failed or excluded runs
 known remaining risks
 ```
+
+## Reward Comparison Gate
+
+Post-training reward comparisons across RL methods and benchmarks must use same-tier raw environment reward delta. Valid sources are original environment rewards on one scale, for example `PowerUCEnv.step()` output or `eval_episodes.csv:reward`.
+
+Do not directly compare each method's shaped training-objective reward. Those curves are diagnostic-only and must be excluded from performance claims, algorithm rankings, PPT takeaways, and paper-facing conclusions.
 
 ## Figures
 
