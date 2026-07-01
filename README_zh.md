@@ -1,4 +1,4 @@
-# IEEE RL/DL/ML Reproducible Training 技能
+# IEEE RL Reproducible Training 技能
 
 <p align="right"><a href="README.md">English</a> | <strong>简体中文</strong></p>
 
