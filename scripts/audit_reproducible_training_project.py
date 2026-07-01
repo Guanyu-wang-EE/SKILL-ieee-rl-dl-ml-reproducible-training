@@ -20,7 +20,8 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 
-HEADER_MARKERS = ("中文概览", "中文为主总览")
+HEADER_MARKERS = ("中文概览",)
+HEADER_FIELDS = ("目的", "创建日期", "输入文件/CSV", "输出文件", "依赖脚本/模块", "运行示例", "复现说明")
 BUDDHA_MARKERS = ("佛祖保佑", "Buddha")
 COMPLIANCE_COLUMNS = {"gate_id", "requirement", "evidence_path", "command", "verdict", "missing_reason"}
 ALGORITHM_COMPARISON_COLUMNS = {
@@ -97,7 +98,9 @@ def check_python_headers(root: Path) -> list[dict[str, str]]:
                 continue
             head = path.read_text(encoding="utf-8", errors="ignore")[:1200]
             rel = str(path.relative_to(root))
-            if not any(marker in head for marker in HEADER_MARKERS):
+            has_header_marker = any(marker in head for marker in HEADER_MARKERS)
+            has_header_fields = all(field in head for field in HEADER_FIELDS)
+            if not (has_header_marker or has_header_fields):
                 findings.append(finding("WARN", "legacy_missing_python_chinese_header", rel))
             if is_entry_script(path) and not any(marker in head for marker in BUDDHA_MARKERS):
                 findings.append(finding("FAIL", "generated_entry_missing_buddha_header", rel))

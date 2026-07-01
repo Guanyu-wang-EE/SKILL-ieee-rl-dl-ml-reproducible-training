@@ -38,7 +38,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 - Generated Markdown must be Chinese-first, technically explicit, cross-linked, and readable by an engineering colleague who did not watch the run.
 - Post-training packs must include README or index entry, main/summary/debug reports, risk analysis, figure/table index, reproducibility manifest with SHA256 and bytes, and explicit missing-output notes.
 - Figures must follow IEEE style, export PNG/PDF/SVG when data exists, validate SVG font handling and vector path geometry, avoid overlap/clutter, and pass a figure quality audit or record why audit is unavailable.
-- Before editing generated Python experiment files, load `assets/python_file_header_templates.md`. All generated `.py` files keep the Chinese-first overview header. Buddha ASCII is an additional block only for `main.py`, `run_*.py`, `train_*.py`, long-running launchers, and equivalent project entrypoints.
+- Before editing generated Python experiment files, load `assets/python_file_header_templates.md`. All generated `.py` files keep the Chinese-first overview header fields without a literal `# 中文为主总览：` line. Buddha ASCII is an additional block only for `main.py`, `run_*.py`, `train_*.py`, long-running launchers, and equivalent project entrypoints. Important or innovative code blocks need concise Chinese comments.
 - Preserve successful run records. Delete failed/misleading artifacts only when user/project instructions authorize deletion; otherwise mark them excluded with evidence.
 - Missing data is a result. Do not fabricate plots, tables, SOC traces, metrics, baselines, or paper-level claims.
 

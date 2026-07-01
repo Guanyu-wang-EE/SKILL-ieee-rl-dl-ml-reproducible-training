@@ -57,7 +57,8 @@ Do not load every reference by default. The skill is designed as a compact route
 - Do not claim completion until training records and evaluation records are separated.
 - Do not advance a phase after a failed scientific gate; use the five-cycle debug rule and record evidence before marking `BLOCKED`.
 - When code, tests, execution configs, or debug patches changed, close with Ponytail-style minimality review and Brooks-style code/test diagnosis.
-- Before editing generated Python experiment files, load [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md); Buddha ASCII is only for entrypoints and never replaces the Chinese overview header.
+- Before editing generated Python experiment files, load [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md); use the Chinese overview header fields directly without outputting a literal `# 中文为主总览：` line.
+- Buddha ASCII is only for entrypoints, and important or innovative code blocks need concise Chinese comments.
 - Before final completion, compare stage contracts, report claims, figure axes/legends/text, and actual output files.
 - Git submission keeps source/tests/docs/CSV/JSON/figures/gates/reports/manifests/lightweight evidence and excludes raw inputs, logs, caches, and heavy solver caches unless explicitly archival.
 - Do not compare shaped training-objective rewards across methods as performance evidence.

@@ -4,9 +4,10 @@ Use these templates in Python files generated for RL/DRL reproduction projects g
 
 ## All Python Files
 
+Use the field comments below directly. Do not add a literal heading such as `# 中文为主总览：`; Chinese-first is the requirement, not an output line.
+
 ```python
 # -*- coding: utf-8 -*-
-# 中文为主总览：
 # 目的：
 # 创建日期：
 # 输入文件/CSV：
@@ -54,5 +55,6 @@ Write detailed comments only where logic is hard to audit or affects reproducibi
 - Seed fixing.
 - Checkpoint selection strategy.
 - Any data filtering that changes reported metrics.
+- Important or innovative algorithm/design blocks in the middle or later code; use concise, high-signal Chinese comments.
 
 Do not add comments for ordinary assignments or self-evident control flow.

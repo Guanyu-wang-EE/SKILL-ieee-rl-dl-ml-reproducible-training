@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Validate an IEEE figure manifest for required PDF/SVG/PNG exports, SHA256 values,
-data sources, generation command, generation time, SVG font evidence, and vector geometry.
+目的：验证 IEEE figure manifest 是否覆盖 PDF/SVG/PNG 导出、SHA256、数据源、生成命令、SVG 字体证据和矢量几何。
+创建日期：2026-06-29.
+输入文件/CSV：figure manifest JSON.
+输出文件：stdout 校验结果和进程退出码。
+依赖脚本/模块：Python 标准库。
+运行示例：python scripts/check_ieee_plot_manifest.py figures/manifest.json
+复现说明：只做图件清单与导出质量 smoke audit，不替代人工视觉审查。
 '''
 
 from __future__ import annotations

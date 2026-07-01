@@ -57,7 +57,8 @@
 - 训练记录与评估记录未分离前，不得声明完成。
 - 科学 gate 失败后不得推进阶段；必须使用五循环调试规则并记录证据，再标记 `BLOCKED`。
 - 当代码、测试、执行配置或 debug 补丁发生变化时，收口阶段必须加入 Ponytail-style 最小化审查与 Brooks-style 代码/测试诊断。
-- 编辑生成的 Python 实验文件前，必须加载 [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md)；Buddha ASCII 只用于入口脚本，不能替代中文 overview header。
+- 编辑生成的 Python 实验文件前，必须加载 [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md)；直接使用中文 overview header 字段，不输出字面量 `# 中文为主总览：` 行。
+- Buddha ASCII 只用于入口脚本；重要或创新代码块需要简洁中文注释。
 - 最终完成前，必须核对 stage contract、报告声明、图轴/legend/文字与实际输出文件。
 - Git 提交保留 source/tests/docs/CSV/JSON/figures/gates/reports/manifests/lightweight evidence；排除 raw inputs、logs、caches 与大体积 solver caches，除非明确作为归档证据。
 - 不得把不同方法各自的 shaped training-objective reward 当作性能证据直接互比。

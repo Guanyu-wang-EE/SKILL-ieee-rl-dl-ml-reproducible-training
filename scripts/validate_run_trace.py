@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Validate an RL/DRL run folder for the trace files required by the
-ieee-rl-reproducible-training skill.
+目的：验证单个 RL/DRL run folder 是否包含技能要求的 trace 文件。
+创建日期：2026-06-29.
+输入文件/CSV：run folder，必要时读取 progress.csv、eval_episodes.csv 等。
+输出文件：stdout 校验结果和进程退出码。
+依赖脚本/模块：Python 标准库。
+运行示例：python scripts/validate_run_trace.py runs/example --require-eval
+复现说明：只做结构与 schema 冒烟检查，不替代科学 gate。
 '''
 
 from __future__ import annotations

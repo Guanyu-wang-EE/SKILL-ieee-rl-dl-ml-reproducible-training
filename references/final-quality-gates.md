@@ -21,9 +21,9 @@ For non-RL, affine-only, DL-only, or paper-style numerical reproduction packages
 For generated or substantially rewritten Python experiment files:
 
 - Load `assets/python_file_header_templates.md` before auditing or editing headers.
-- Require the Chinese overview header fields from that template for all generated `.py` files.
+- Require the Chinese overview header fields from that template for all generated `.py` files; do not require or add a literal `# 中文为主总览：` line.
 - Require the Buddha blessing block only for generated `main.py`, `run_*.py`, `train_*.py`, long-running launchers, and equivalent project entrypoints.
-- Keep comments useful: reward/cost definitions, constraint thresholds, seed fixing, checkpoint strategy, data filtering, and non-obvious algorithm logic.
+- Keep comments useful: reward/cost definitions, constraint thresholds, seed fixing, checkpoint strategy, data filtering, non-obvious algorithm logic, and important or innovative design blocks. Use concise Chinese comments for those design blocks.
 
 If a legacy file lacks these headers and the task does not authorize editing it, mention the gap instead of silently ignoring it.
 
