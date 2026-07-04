@@ -2,7 +2,7 @@
 
 <p align="right"><strong>English</strong> | <a href="README_zh.md">简体中文</a></p>
 
-This repository is the Git-backed source mirror for an RL/DRL/DL/ML reproducible-training skill. It turns long-running learning experiments into auditable research packages: live records, separated train/evaluation evidence when applicable, TensorBoard monitoring for long training, same-tier raw reward comparisons when applicable, IEEE-style figures, artifact manifests, and final quality gates.
+This repository is the Git-backed source mirror for an RL/DRL/DL/ML reproducible-training skill. It turns long-running learning experiments into auditable research packages: live records, full-resume checkpoint contracts, separated train/evaluation evidence when applicable, TensorBoard monitoring for long training, same-tier raw reward comparisons when applicable, IEEE-style figures, artifact manifests, and final quality gates.
 
 Repository documentation belongs here. Lean installed runtime copies should contain only files needed by the skill itself.
 
@@ -53,6 +53,8 @@ Do not load every reference by default. The skill is designed as a compact route
 ## Core Contracts
 
 - Do not start long training without smoke tests, resource checks, live logging, checkpoints, and a TensorBoard dashboard plan.
+- Do not call a run full-resumable unless checkpoints save full training state: policy/actor, critic/value, target networks, optimizers, schedulers/noise/entropy-temperature state, replay buffer when applicable, RNG states, episode/global-step cursor, best metric state, config hash, git commit, and resume command.
+- Actor-only or model-only checkpoints are warm starts, fine-tuning, or continuation runs; they are not lossless full resumes.
 - Do not impose RL-only artifacts on non-RL, affine-only, DL-only, or paper-style numerical reproduction projects.
 - Do not claim completion until training records and evaluation records are separated.
 - Do not advance a phase after a failed scientific gate; use the five-cycle debug rule and record evidence before marking `BLOCKED`.
@@ -71,7 +73,7 @@ Do not load every reference by default. The skill is designed as a compact route
 
 | Reference | Load When |
 |---|---|
-| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | Planning or auditing long training, live CSV/JSONL/stdout records, TensorBoard, checkpoints, scientific gates, five-cycle debugging, bad-run handling |
+| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | Planning or auditing long training, live CSV/JSONL/stdout records, TensorBoard, full-resume checkpoints, scientific gates, five-cycle debugging, bad-run handling |
 | [`references/reproducibility-recordkeeping.md`](references/reproducibility-recordkeeping.md) | Writing or auditing project `README.md`, `requirements.txt`, `output.md`, run records, Python headers, and reproducibility notes |
 | [`references/post-training-reporting.md`](references/post-training-reporting.md) | Generating reports, figures, tables, artifact index, reproducibility manifest, PPT index, colleague briefing, missing-output notes |
 | [`references/ieee-plot-style.md`](references/ieee-plot-style.md) | Creating or reviewing IEEE-style figures, captions, SVG/PDF/PNG exports, figure manifests |
@@ -103,7 +105,7 @@ Do not load every reference by default. The skill is designed as a compact route
 | `config.json`, `run_command.txt`, `git_commit.txt` | Reproducible launch context |
 | `stdout.log`, `progress.csv`, `episodes.csv`, `updates.csv` | Live training and diagnostic records |
 | `tensorboard/` or `tb/` event files | Required long-training dashboard evidence |
-| `checkpoints/latest`, `checkpoints/best` | Recoverable model provenance |
+| `checkpoints/latest`, `checkpoints/best` | Recoverable model provenance; full training state when full resume is claimed |
 | `summary.json`, `diagnostic.json` or `gate_debug_report.md` | Final status, gate/debug evidence, stopped-run reasons |
 
 ### Evaluation Records

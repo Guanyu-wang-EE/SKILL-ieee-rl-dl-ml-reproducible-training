@@ -2,7 +2,7 @@
 
 <p align="right"><a href="README.md">English</a> | <strong>简体中文</strong></p>
 
-本仓库是一个 RL/DRL/DL/ML 可复现训练技能的 Git 源镜像。它把长时间学习实验收束为可审计的研究包：实时记录、适用时的训练/评估证据分离、长训练 TensorBoard 监控、适用时的同 tier 原始奖励对比、IEEE 风格图件、产物清单与最终质量门。
+本仓库是一个 RL/DRL/DL/ML 可复现训练技能的 Git 源镜像。它把长时间学习实验收束为可审计的研究包：实时记录、无损断点续训 checkpoint 契约、适用时的训练/评估证据分离、长训练 TensorBoard 监控、适用时的同 tier 原始奖励对比、IEEE 风格图件、产物清单与最终质量门。
 
 仓库文档保留在这里。精简的安装运行副本只应包含技能本身执行所需文件。
 
@@ -53,6 +53,8 @@
 ## 核心契约
 
 - 没有冒烟测试、资源检查、实时日志、checkpoint 与 TensorBoard 仪表盘计划，不得开始长训练。
+- 只有 checkpoint 保存完整训练状态时，才允许称为 full resume / 无损断点续训：policy/actor、critic/value、target networks、optimizers、schedulers/noise/entropy-temperature state、适用时的 replay buffer、RNG states、episode/global-step cursor、best metric state、config hash、git commit 与 resume command。
+- 只保存 actor 或 model 的 checkpoint 只能标为 warm start、fine-tuning 或 continuation run，不能标为无损 full resume。
 - 不得把 RL-only 产物强加给 non-RL、affine-only、DL-only 或 paper-style numerical reproduction 项目。
 - 训练记录与评估记录未分离前，不得声明完成。
 - 科学 gate 失败后不得推进阶段；必须使用五循环调试规则并记录证据，再标记 `BLOCKED`。
@@ -71,7 +73,7 @@
 
 | 参考文件 | 何时加载 |
 |---|---|
-| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | 规划或审计长训练、实时 CSV/JSONL/stdout 记录、TensorBoard、checkpoint、科学 gate、五循环调试、坏 run 处理 |
+| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | 规划或审计长训练、实时 CSV/JSONL/stdout 记录、TensorBoard、full-resume checkpoint、科学 gate、五循环调试、坏 run 处理 |
 | [`references/reproducibility-recordkeeping.md`](references/reproducibility-recordkeeping.md) | 撰写或审计项目 `README.md`、`requirements.txt`、`output.md`、运行记录、Python 头注释与复现说明 |
 | [`references/post-training-reporting.md`](references/post-training-reporting.md) | 生成报告、图件、表格、artifact index、reproducibility manifest、PPT index、colleague briefing、缺失产物说明 |
 | [`references/ieee-plot-style.md`](references/ieee-plot-style.md) | 创建或审查 IEEE 风格图件、caption、SVG/PDF/PNG 导出、figure manifest |
@@ -103,7 +105,7 @@
 | `config.json`, `run_command.txt`, `git_commit.txt` | 可复现启动上下文 |
 | `stdout.log`, `progress.csv`, `episodes.csv`, `updates.csv` | 实时训练与诊断记录 |
 | `tensorboard/` 或 `tb/` event files | 长训练必需的仪表盘证据 |
-| `checkpoints/latest`, `checkpoints/best` | 可恢复模型来源 |
+| `checkpoints/latest`, `checkpoints/best` | 可恢复模型来源；声明 full resume 时必须包含完整训练状态 |
 | `summary.json`, `diagnostic.json` 或 `gate_debug_report.md` | 最终状态、gate/debug 证据、中止原因 |
 
 ### 评估记录

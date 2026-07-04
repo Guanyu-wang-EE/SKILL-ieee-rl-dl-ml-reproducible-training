@@ -1,4 +1,4 @@
 interface:
   display_name: 'IEEE RL/DL/ML Reproducible Training'
-  short_description: 'Reproducible RL/DL/ML training, IEEE plots, reports, risk notes, and audits.'
-  default_prompt: 'Use $ieee-rl-dl-ml-reproducible-training to run or close a reproducible RL/DL/ML experiment with live records, separate evaluation when applicable, IEEE-style figures, figure quality audit, colleague-readable reports, and a SHA256 manifest.'
+  short_description: 'Reproducible RL/DL/ML training with full-resume checkpoints, IEEE plots, reports, and audits.'
+  default_prompt: 'Use $ieee-rl-dl-ml-reproducible-training to run or close a reproducible RL/DL/ML experiment with live records, full-resume checkpoint checks, separate evaluation when applicable, IEEE-style figures, figure quality audit, colleague-readable reports, and a SHA256 manifest.'

@@ -1,6 +1,6 @@
 ---
 name: ieee-rl-dl-ml-reproducible-training
-description: Use when RL/DRL/DL/ML paper reproduction or energy-system control work needs unattended long-goal execution, long training, mandatory TensorBoard long-run visualization when applicable, traceable train/test evaluation, same-tier raw environment reward delta comparisons when applicable, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
+description: Use when RL/DRL/DL/ML paper reproduction or energy-system control work needs unattended long-goal execution, long training, full-resume checkpoints, mandatory TensorBoard long-run visualization when applicable, traceable train/test evaluation, same-tier raw environment reward delta comparisons when applicable, online-checkable CSV/JSONL/stdout records, IEEE TSG/TPS figures, Chinese-first colleague-readable reports, post-training PPT/report packs, figure/table quality audit, SHA256 manifests, artifact indexes, risk analysis, or cleanup/exclusion of failed or half-finished artifacts.
 ---
 
 # IEEE RL/DL/ML Reproducible Training
@@ -16,7 +16,7 @@ If project instructions declare the work as non-RL, affine-only, DL-only, or pap
 ## Reference Routing
 | User task | Load |
 |---|---|
-| Set up or audit unattended long-goal execution, long training traces, scientific gates, five-cycle debugging, stdout logs, CSV/JSONL, TensorBoard, checkpoints, smoke tests, or evaluation/test passes | `references/realtime-training-monitoring.md` |
+| Set up or audit unattended long-goal execution, long training traces, full-resume checkpoints, scientific gates, five-cycle debugging, stdout logs, CSV/JSONL, TensorBoard, checkpoints, smoke tests, or evaluation/test passes | `references/realtime-training-monitoring.md` |
 | Write or audit README, requirements, `output.md`, run records, environment records, or Python headers | `references/reproducibility-recordkeeping.md` plus needed template in `assets/` |
 | Generate PPT-ready post-training Markdown, figures, tables, reproducibility manifest, artifact index, PPT index, or missing-figure/table reports | `references/post-training-reporting.md`; also load `references/ieee-plot-style.md` for figure style |
 | Generate or review IEEE Transactions on Smart Grid / Power Systems figures, captions, export formats, SVG fonts, or figure manifests | `references/ieee-plot-style.md`; use `scripts/check_ieee_plot_manifest.py` when a manifest exists |
@@ -30,6 +30,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 ## Hard Gates
 
 - Do not start long training without a smoke test, resource/GPU/Python/solver check when relevant, dry-run manifest, unique output directory, live CSV/JSONL/stdout/checkpoint plan, and TensorBoard event logging/dashboard plan.
+- Do not call a run resumable unless checkpoints include full training state: model, target model, optimizer, scheduler/noise state, replay/buffer state when applicable, RNG states, episode/global-step cursor, config hash, git commit, and resume command. Actor-only checkpoints are warm starts, not full resume.
 - Do not start an unattended repository long goal without recording `git status --short --branch`, reading `AGENTS.md`, `README.md`, relevant plan/index/protocol docs, configs, tests, and target source files, and identifying the first incomplete required gate.
 - Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.
 - Do not advance a phase after a failed scientific gate. Run the Brooks-style five-cycle debug rule from `references/realtime-training-monitoring.md`, then mark `BLOCKED` with evidence if still unresolved.

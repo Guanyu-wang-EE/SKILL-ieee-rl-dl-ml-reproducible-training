@@ -156,8 +156,28 @@ Do not average failed, infeasible, stopped, smoke, short, or pilot runs into val
 - Save more than the final model.
 - Keep `latest` and `best` checkpoints during training.
 - Final artifacts must let a reviewer explain model provenance from `actor.pt`, `summary.json`, `config.json`, and `run_command.txt`.
+- Treat actor-only/model-only checkpoints as warm-start checkpoints, not full-resume checkpoints.
+- For long RL/DRL runs, save full-resume checkpoints at a fixed interval and at run stop. A full-resume checkpoint must include policy/actor, critic/value networks, target networks, optimizers, schedulers, exploration/noise state, entropy/temperature state when applicable, replay/buffer state or an explicit `buffer_not_required` reason, RNG states for Python/NumPy/PyTorch/CUDA/environment, episode/global-step cursor, current best metric, config hash, git commit, and the exact resume command.
 
 Use project-conventional names such as `checkpoints/latest.pt`, `checkpoints/best.pt`, and final `actor.pt`. If the algorithm is not actor-based, `config.json` must explicitly name the replacement final model file.
+
+Recommended CLI contract for resumable training:
+
+```text
+--checkpoint-mode full
+--checkpoint-interval-episodes <N>
+--resume-from <run-dir>/checkpoints/latest/full_state.pt
+--resume-mode exact
+```
+
+Recommended launch pattern:
+
+```powershell
+python train.py --episodes 4500 --checkpoint-mode full --checkpoint-interval-episodes 50 --output-dir runs/formal_ep4500
+python train.py --resume-from runs/formal_ep4500/checkpoints/latest/full_state.pt --resume-mode exact --episodes 4500 --output-dir runs/formal_ep4500_resume
+```
+
+If a project only has actor/model checkpoints, use `--init-actor-checkpoint` or the project-equivalent flag and label the run `warm_start`, `fine_tune`, or `continuation`; do not merge it into a continuous sample-efficiency curve as an exact resume.
 
 ## Evaluation / Test Pass
 
