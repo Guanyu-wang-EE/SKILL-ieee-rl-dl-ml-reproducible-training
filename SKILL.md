@@ -16,7 +16,7 @@ If project instructions declare the work as non-RL, affine-only, DL-only, or pap
 ## Reference Routing
 | User task | Load |
 |---|---|
-| Set up or audit unattended long-goal execution, long training traces, full-resume checkpoints, scientific gates, five-cycle debugging, stdout logs, CSV/JSONL, TensorBoard, checkpoints, smoke tests, or evaluation/test passes | `references/realtime-training-monitoring.md` |
+| Set up or audit unattended long-goal execution, long training traces, full-resume checkpoints, scientific gates, five-cycle debugging, subagent monitors/reviewers/safeguards, stdout logs, CSV/JSONL, TensorBoard, checkpoints, smoke tests, or evaluation/test passes | `references/realtime-training-monitoring.md` |
 | Write or audit README, requirements, `output.md`, run records, environment records, or Python headers | `references/reproducibility-recordkeeping.md` plus needed template in `assets/` |
 | Generate PPT-ready post-training Markdown, figures, tables, reproducibility manifest, artifact index, PPT index, or missing-figure/table reports | `references/post-training-reporting.md`; also load `references/ieee-plot-style.md` for figure style |
 | Generate or review IEEE Transactions on Smart Grid / Power Systems figures, captions, export formats, SVG fonts, or figure manifests | `references/ieee-plot-style.md`; use `scripts/check_ieee_plot_manifest.py` when a manifest exists |
@@ -31,6 +31,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 ## Hard Gates
 
 - Do not start long training without a smoke test, resource/GPU/Python/solver check when relevant, dry-run manifest, unique output directory, live CSV/JSONL/stdout/checkpoint plan, and TensorBoard event logging/dashboard plan.
+- Use subagents during long training only when explicitly requested or already authorized by the project plan; keep them as bounded reviewers, monitors, and safeguards while the main agent owns scientific decisions, debug patches, run stops, cleanup, and final claims.
 - Do not call a run resumable unless checkpoints include full training state: model, target model, optimizer, scheduler/noise state, replay/buffer state when applicable, RNG states, episode/global-step cursor, config hash, git commit, and resume command. Actor-only checkpoints are warm starts, not full resume.
 - Do not start an unattended repository long goal without recording `git status --short --branch`, reading `AGENTS.md`, `README.md`, relevant plan/index/protocol docs, configs, tests, and target source files, and identifying the first incomplete required gate.
 - Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.

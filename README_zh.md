@@ -53,6 +53,7 @@
 ## 核心契约
 
 - 没有冒烟测试、资源检查、实时日志、checkpoint 与 TensorBoard 仪表盘计划，不得开始长训练。
+- 长训练只有在用户明确要求或项目计划授权时才使用 subagents；子代理只作为有边界的审查、监控与护栏，科学决策、补丁、停止运行、清理与最终声明由主 agent 负责。
 - 只有 checkpoint 保存完整训练状态时，才允许称为 full resume / 无损断点续训：policy/actor、critic/value、target networks、optimizers、schedulers/noise/entropy-temperature state、适用时的 replay buffer、RNG states、episode/global-step cursor、best metric state、config hash、git commit 与 resume command。
 - 只保存 actor 或 model 的 checkpoint 只能标为 warm start、fine-tuning 或 continuation run，不能标为无损 full resume。
 - 不得把 RL-only 产物强加给 non-RL、affine-only、DL-only 或 paper-style numerical reproduction 项目。
@@ -75,7 +76,7 @@
 
 | 参考文件 | 何时加载 |
 |---|---|
-| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | 规划或审计长训练、实时 CSV/JSONL/stdout 记录、TensorBoard、full-resume checkpoint、科学 gate、五循环调试、坏 run 处理 |
+| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | 规划或审计长训练、subagent 审查/监控/护栏、实时 CSV/JSONL/stdout 记录、TensorBoard、full-resume checkpoint、科学 gate、五循环调试、坏 run 处理 |
 | [`references/reproducibility-recordkeeping.md`](references/reproducibility-recordkeeping.md) | 撰写或审计项目 `README.md`、`requirements.txt`、`output.md`、运行记录、Python 头注释与复现说明 |
 | [`references/post-training-reporting.md`](references/post-training-reporting.md) | 生成报告、图件、表格、artifact index、reproducibility manifest、PPT index、colleague briefing、缺失产物说明 |
 | [`references/ieee-plot-style.md`](references/ieee-plot-style.md) | 创建或审查 IEEE 风格图件、caption、SVG/PDF/PNG 导出、figure manifest |

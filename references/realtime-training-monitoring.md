@@ -16,6 +16,25 @@ Use a layered monitoring stack instead of binding reproducibility to one viewer:
 
 For long training, do not run end-to-end blind: create TensorBoard event files and a launch/view command before the run starts. TensorBoard must not replace the authoritative CSV/JSONL records or final IEEE figure generation. MATLAB monitoring reads the generated CSV files as the backup live supervision path; it does not justify omitting TensorBoard unless the blocker is explicit and approved.
 
+## Subagent Monitors And Safeguards
+
+Use subagents for long training only when the user explicitly requests them or the project plan already authorizes them. They are useful when logs, plots, seeds, or artifacts are too noisy for the main thread, but they must remain sidecar reviewers, monitors, and safeguards.
+
+Good subagent jobs:
+
+- Monitor `stdout.log`, `progress.csv`, TensorBoard event presence, checkpoint freshness, and stalled-file risk.
+- Review gate/debug evidence with the five-cycle rule and return `P0/P1/P2` findings.
+- Audit figures, tables, metric grain, raw-reward comparisons, missing artifacts, and manifest coverage.
+- Summarize independent run slices such as one algorithm, seed group, scenario, or output folder.
+
+Boundaries:
+
+- Main agent owns training launch/stop decisions, scientific semantics, patches, cleanup, commit/push, and final claims.
+- Subagents are read-only by default. They must not change reward/cost definitions, seeds, budgets, core hyperparameters, checkpoint semantics, run folders, or evidence files unless the main agent gives a narrow write scope.
+- Give subagents raw artifacts and a clear return format, not the intended conclusion. Require artifact paths, commands inspected, verdict, risk level, and the smallest recommended next action.
+- During debugging, subagents may propose Brooks-style `Symptom`, `Source`, `Consequence`, `Remedy` diagnoses. The main agent records the official cycle, applies any patch, reruns the narrow check, and decides whether the phase can advance.
+- Do not spawn subagents for a trivial smoke run, a single obvious failing command, or a task whose result blocks the main agent's immediate next step.
+
 ## Repository Long-Goal Entry
 
 Before editing or launching an unattended long goal:

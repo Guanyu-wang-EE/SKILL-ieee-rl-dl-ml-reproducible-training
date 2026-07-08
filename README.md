@@ -53,6 +53,7 @@ Do not load every reference by default. The skill is designed as a compact route
 ## Core Contracts
 
 - Do not start long training without smoke tests, resource checks, live logging, checkpoints, and a TensorBoard dashboard plan.
+- Use subagents for long training only when explicitly requested or project-authorized; keep them as bounded reviewers, monitors, and safeguards, while the main agent owns scientific decisions, patches, run stops, cleanup, and final claims.
 - Do not call a run full-resumable unless checkpoints save full training state: policy/actor, critic/value, target networks, optimizers, schedulers/noise/entropy-temperature state, replay buffer when applicable, RNG states, episode/global-step cursor, best metric state, config hash, git commit, and resume command.
 - Actor-only or model-only checkpoints are warm starts, fine-tuning, or continuation runs; they are not lossless full resumes.
 - Do not impose RL-only artifacts on non-RL, affine-only, DL-only, or paper-style numerical reproduction projects.
@@ -75,7 +76,7 @@ Do not load every reference by default. The skill is designed as a compact route
 
 | Reference | Load When |
 |---|---|
-| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | Planning or auditing long training, live CSV/JSONL/stdout records, TensorBoard, full-resume checkpoints, scientific gates, five-cycle debugging, bad-run handling |
+| [`references/realtime-training-monitoring.md`](references/realtime-training-monitoring.md) | Planning or auditing long training, subagent monitors/reviewers/safeguards, live CSV/JSONL/stdout records, TensorBoard, full-resume checkpoints, scientific gates, five-cycle debugging, bad-run handling |
 | [`references/reproducibility-recordkeeping.md`](references/reproducibility-recordkeeping.md) | Writing or auditing project `README.md`, `requirements.txt`, `output.md`, run records, Python headers, and reproducibility notes |
 | [`references/post-training-reporting.md`](references/post-training-reporting.md) | Generating reports, figures, tables, artifact index, reproducibility manifest, PPT index, colleague briefing, missing-output notes |
 | [`references/ieee-plot-style.md`](references/ieee-plot-style.md) | Creating or reviewing IEEE-style figures, captions, SVG/PDF/PNG exports, figure manifests |
