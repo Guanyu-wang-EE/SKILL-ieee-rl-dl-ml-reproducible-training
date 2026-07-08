@@ -54,7 +54,7 @@
 
 - 没有冒烟测试、资源检查、实时日志、checkpoint 与 TensorBoard 仪表盘计划，不得开始长训练。
 - 长训练只有在用户明确要求或项目计划授权时才使用 subagents；子代理只作为有边界的审查、监控与护栏，科学决策、补丁、停止运行、清理与最终声明由主 agent 负责。
-- 长训练一旦打开 subagents，就保持为只读监控，直到最终收口、明确停止，或其负责的产物切片已不再相关；主 agent 等待报告时继续推进非破坏性监控。
+- 长训练一旦打开 subagents，不应只因首轮报告完成就关闭；只要其负责的产物切片仍活跃，就保持只读监控，并在最终收口、明确停止、范围过期或资源压力出现时关闭。
 - 只有 checkpoint 保存完整训练状态时，才允许称为 full resume / 无损断点续训：policy/actor、critic/value、target networks、optimizers、schedulers/noise/entropy-temperature state、适用时的 replay buffer、RNG states、episode/global-step cursor、best metric state、config hash、git commit 与 resume command。
 - 只保存 actor 或 model 的 checkpoint 只能标为 warm start、fine-tuning 或 continuation run，不能标为无损 full resume。
 - 不得把 RL-only 产物强加给 non-RL、affine-only、DL-only 或 paper-style numerical reproduction 项目。

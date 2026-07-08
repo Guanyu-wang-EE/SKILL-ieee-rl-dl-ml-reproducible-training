@@ -33,7 +33,7 @@ Boundaries:
 - Subagents are read-only by default. They must not change reward/cost definitions, seeds, budgets, core hyperparameters, checkpoint semantics, run folders, or evidence files unless the main agent gives a narrow write scope.
 - Give subagents raw artifacts and a clear return format, not the intended conclusion. Require artifact paths, commands inspected, verdict, risk level, and the smallest recommended next action.
 - During debugging, subagents may propose Brooks-style `Symptom`, `Source`, `Consequence`, `Remedy` diagnoses. The main agent records the official cycle, applies any patch, reruns the narrow check, and decides whether the phase can advance.
-- Once opened for long training, keep subagents as read-only monitors until final closure, an explicit stop request, or their assigned artifact slice is no longer relevant. The main agent should keep advancing non-destructive monitoring work while waiting for their reports.
+- Once opened for long training, do not close subagents merely after the first report. Keep them as read-only monitors while their artifact slice remains active; close them at final closure, explicit stop, stale scope, or resource-pressure. The main agent should keep advancing non-destructive monitoring work while waiting for their reports.
 - Do not spawn subagents for a trivial smoke run, a single obvious failing command, or a task whose result blocks the main agent's immediate next step.
 
 ## Repository Long-Goal Entry

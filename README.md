@@ -54,7 +54,7 @@ Do not load every reference by default. The skill is designed as a compact route
 
 - Do not start long training without smoke tests, resource checks, live logging, checkpoints, and a TensorBoard dashboard plan.
 - Use subagents for long training only when explicitly requested or project-authorized; keep them as bounded reviewers, monitors, and safeguards, while the main agent owns scientific decisions, patches, run stops, cleanup, and final claims.
-- Once opened for long training, keep subagents as read-only monitors until final closure, explicit stop, or artifact-slice irrelevance; the main agent keeps non-destructive monitoring moving while waiting for their reports.
+- Once opened for long training, do not close subagents merely after the first report. Keep them as read-only monitors while their artifact slice remains active, and close them at final closure, explicit stop, stale scope, or resource-pressure.
 - Do not call a run full-resumable unless checkpoints save full training state: policy/actor, critic/value, target networks, optimizers, schedulers/noise/entropy-temperature state, replay buffer when applicable, RNG states, episode/global-step cursor, best metric state, config hash, git commit, and resume command.
 - Actor-only or model-only checkpoints are warm starts, fine-tuning, or continuation runs; they are not lossless full resumes.
 - Do not impose RL-only artifacts on non-RL, affine-only, DL-only, or paper-style numerical reproduction projects.
