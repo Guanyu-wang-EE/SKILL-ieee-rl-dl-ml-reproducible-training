@@ -58,7 +58,8 @@
 - 不得把 RL-only 产物强加给 non-RL、affine-only、DL-only 或 paper-style numerical reproduction 项目。
 - 训练记录与评估记录未分离前，不得声明完成。
 - 科学 gate 失败后不得推进阶段；必须使用五循环调试规则并记录证据，再标记 `BLOCKED`。
-- 当代码、测试、执行配置或 debug 补丁发生变化时，收口阶段必须加入 Ponytail-style 最小化审查与 Brooks-style 代码/测试诊断。
+- 对代码、实验、绘图、报告或指标定义的实质修改，必须运行三轮 reviewer-driven 收口循环；未解决的 P0/P1 发现会阻塞完成声明。
+- 重要代码/设计发现必须使用 `Symptom`、`Source`、`Consequence`、`Remedy`；图件/表格/指标审查必须检查数据粒度、分组键、指标方向、归一化与重复计数风险。
 - 编辑生成的 Python 实验文件前，必须加载 [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md)；直接使用中文 overview header 字段，不输出字面量 `# 中文为主总览：` 行。
 - Buddha ASCII 只用于入口脚本；重要或创新代码块需要简洁中文注释。
 - 最终完成前，必须核对 stage contract、报告声明、图轴/legend/文字与实际输出文件。
@@ -66,8 +67,9 @@
 - 不得把不同方法各自的 shaped training-objective reward 当作性能证据直接互比。
 - 训练后奖励比较必须使用同 tier 原始环境奖励差值，例如同一尺度的环境 `step()` reward 或 `eval_episodes.csv:reward`。
 - 项目根 `README.md` 必须是导航页，用相对链接索引报告、图件、表格、代码、配置、运行记录、验证日志、清单、审计与缺失产物说明。
-- 最终报告必须包含风险边界、缺失产物说明、artifact index、SHA256 manifest 与质量门证据。
+- 最终报告必须包含风险边界、缺失产物说明、artifact index、SHA256 manifest、适用时的 reviewer-loop 证据与质量门证据。
 - 失败、中断、冒烟、短测、pilot 或不可行运行不得混入有效性能均值。
+- 清理只可自动删除可复现临时缓存；logs、checkpoints、CSV、manifests、生成图件与实验输出必须有明确 disposable contract 或用户授权后才能删除。
 
 ## 参考文件索引
 

@@ -21,6 +21,7 @@ If project instructions declare the work as non-RL, affine-only, DL-only, or pap
 | Generate PPT-ready post-training Markdown, figures, tables, reproducibility manifest, artifact index, PPT index, or missing-figure/table reports | `references/post-training-reporting.md`; also load `references/ieee-plot-style.md` for figure style |
 | Generate or review IEEE Transactions on Smart Grid / Power Systems figures, captions, export formats, SVG fonts, or figure manifests | `references/ieee-plot-style.md`; use `scripts/check_ieee_plot_manifest.py` when a manifest exists |
 | Final audit before declaring a run/project/report complete | `references/final-quality-gates.md`; optionally run `scripts/audit_reproducible_training_project.py` |
+| Reviewer-driven closure for substantial code, experiment, plotting, reporting, or metric-definition changes | `references/final-quality-gates.md` |
 | Clean or close a project stage, exclude failed/half-finished/junk artifacts, or preserve successful runs | `references/project-hygiene-cleanup.md` |
 | Use MATLAB for live CSV viewing | `references/realtime-training-monitoring.md` and `assets/monitor_training_template.m` |
 | Verify an existing run folder | Use `scripts/validate_run_trace.py` |
@@ -33,6 +34,7 @@ Do not load every reference by default. Load only the routed files plus any dire
 - Do not call a run resumable unless checkpoints include full training state: model, target model, optimizer, scheduler/noise state, replay/buffer state when applicable, RNG states, episode/global-step cursor, config hash, git commit, and resume command. Actor-only checkpoints are warm starts, not full resume.
 - Do not start an unattended repository long goal without recording `git status --short --branch`, reading `AGENTS.md`, `README.md`, relevant plan/index/protocol docs, configs, tests, and target source files, and identifying the first incomplete required gate.
 - Do not claim training/reporting completion until train and evaluation records are separated and the final quality gates are checked.
+- For substantial code, experiment, plotting, reporting, or metric-definition changes, run the reviewer-driven closure loop in `references/final-quality-gates.md`; unresolved P0/P1 findings block completion.
 - Do not advance a phase after a failed scientific gate. Run the Brooks-style five-cycle debug rule from `references/realtime-training-monitoring.md`, then mark `BLOCKED` with evidence if still unresolved.
 - Post-training reward comparisons must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale. Do not compare shaped training-objective rewards across methods as performance claims.
 - Root project `README.md` must be a navigation page with relative links to reports, figures, tables, code, configs, runs, validation, manifests, and missing-output notes; do not leave it as only an introduction or changelog.

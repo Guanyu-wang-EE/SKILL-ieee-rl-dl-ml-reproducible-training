@@ -12,7 +12,7 @@ For non-RL, affine-only, DL-only, or paper-style numerical reproduction packages
 4. Check figures, figure README, figure quality audit, and tables.
 5. Check manifests and indexes.
 6. Check `skill_compliance_audit.md`.
-7. Check closure review when code, tests, or debug patches changed.
+7. Check reviewer-driven closure when code, tests, execution configs, experiments, plots, reports, metrics, or debug patches changed.
 8. Check cleanup/exclusion records.
 9. State remaining missing items instead of silently omitting them.
 
@@ -148,17 +148,20 @@ The PPT index or colleague briefing must map each slide to a figure, table, take
 
 ## Closure Review Gate
 
-Run this gate only when the work changed code, tests, execution-affecting configs, or debug patches. For documentation-only result packaging, state `NOT APPLICABLE`.
+Run this gate when the work changed code, tests, execution-affecting configs, experiments, plots, tables, reports, metric definitions, or debug patches. For documentation-only result packaging with no claim, metric, figure, or table change, state `NOT APPLICABLE`.
 
-1. Ponytail pass: every changed file maps to the failed gate or requested output; no new dependency, abstraction, config surface, or broad refactor was added unless required; unrelated user changes were preserved.
-2. Brooks pass: record material code/test findings as `Symptom`, `Source`, `Consequence`, and `Remedy`; fix blockers that affect learning signal, safety semantics, evaluation validity, reproducibility, or locked claims.
-3. Residual risk pass: record unfixed non-blockers with file paths and evidence. If Brooks Lint is already available, it may be used for this review; do not install it only to satisfy this gate.
+1. Mainline pass: the main agent implements the smallest coherent change, keeps the research objective explicit, and preserves unrelated user changes.
+2. Reviewer loop: run three review-fix-review cycles by default for substantial changes. Review the staged or current diff/artifact set independently and classify findings as `P0`, `P1`, or `P2`. On the third cycle, close only if no `P0` or `P1` remains; otherwise continue until those findings are cleared or explicitly blocked with evidence.
+3. Brooks pass: material code/design findings must record `Symptom`, `Source`, `Consequence`, and `Remedy`. Use test-quality review only when the reviewed object is an existing test suite or test strategy.
+4. Plot/table/metric pass: verify row grain, grouping keys, metric direction, normalization, and duplicate-counting risk before plotting or scoring. Do not connect rows across independent scenarios, seeds, folds, ranks, episodes, or timestamps unless that is the intended statistical unit. Add scenario-level or slice-level tables when aggregate figures can hide heterogeneity.
+5. Ponytail pass: every changed file maps to the failed gate or requested output; no new dependency, abstraction, config surface, or broad refactor was added unless required.
+6. Residual risk pass: record accepted, rejected, and deferred reviewer findings with file paths and evidence. Fix accepted `P0`/`P1` findings before completion; fix `P2` only when cheap and aligned with the objective. If Brooks Lint is already available, it may be used for this review; do not install it only to satisfy this gate.
 
 For paper-style artifact packages, also run a contract closure audit: compare stage contract wording, report claims, figure axes/legends/text, and actual output files. Verify visual inspection evidence, `git diff --check`, generated Python headers, and staged-path boundaries before claiming completion.
 
 ## Cleanup Gate
 
-Do not delete credible successful run records. For failed, debug, half-finished, or misleading artifacts:
+Do not delete credible successful run records. Only reproducible temporary artifacts such as language caches and local test caches may be auto-cleaned. For failed, debug, half-finished, or misleading artifacts:
 
 - exclude them in the report/manifest by default;
 - delete them only if user/project instructions authorize cleanup;
