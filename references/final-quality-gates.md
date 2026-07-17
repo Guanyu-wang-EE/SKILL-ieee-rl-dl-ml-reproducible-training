@@ -94,22 +94,29 @@ README/index -> main report -> summary -> risk report -> figures README -> table
 
 ## Figure Gate
 
-Use `references/ieee-plot-style.md`. Before finalizing figures, check:
+Use `references/ieee-plot-style.md` and record F0–F8 separately. Any failed gate blocks figure-package completion.
 
-- PNG/PDF/SVG export exists when data exists;
-- same-stem PNG/PDF pairs exist for final figures;
-- same-stem PNG/SVG pairs exist for final figures;
-- SVG font mode, font evidence, and vector geometry checks are recorded;
-- font is Times New Roman or a reasonable serif fallback;
-- axis labels include metric names and units when available;
-- x/y limits are not misleading and do not hide important variance;
-- legends do not cover curves;
-- colors are restrained and color-blind safe;
-- captions/report text explain metric, threshold, seed count, and evidence tier;
-- representative core/risk figures have been visually inspected for text overlap, legend occlusion, blank output, and unreadable density;
-- missing columns are recorded in `missing_figures.md`;
-- `figures*/README.md` tells colleagues which PDF figures to use and how to explain risks;
-- `figure_quality_audit.md` and `figure_quality_audit.csv` exist when a final figure package exists, or the reason they are missing is recorded.
+| Gate | Final-audit question |
+|---|---|
+| F0 Scientific semantics | Are evidence tier, row grain, metric direction, normalization population, aggregation, smoothing, axis limits, and claim boundary explicit and consistent with the frozen experiment contract? |
+| F1 Template geometry | Was the local official template inspected, and does the exported PDF use its exact single-/double-column width? For the validated 21 pc profile, is single-column width 3.487 in rather than a guessed double-column canvas? |
+| F2 Style constants | Are Times New Roman or a recorded serif fallback, 8 pt axis labels, 7 pt ticks/legend, 1.2 pt main lines, 0.32 pt raw traces, 0.65 pt spines, neutral grid, and the frozen color-blind palette applied when that profile is active? |
+| F3 Data integrity | Do counts, seeds/scenarios, grouping, direction, and source hashes match? Are raw points exported and smoothing limited to the declared display center line? |
+| F4 Export | Do same-stem PNG/PDF/SVG exist, PNG use at least 600 dpi for the validated profile, and SVG font/vector checks pass? |
+| F5 Machine audit | Does `check_ieee_plot_manifest.py` pass, do hashes and PDF/PNG dimensions match, and does `scientific_contract.no_clipped_valid_points=true` prove no plotted value is clipped? |
+| F6 Final-size visual QA | Was every paper-facing figure inspected at final physical size for overlap, clipping, line visibility, whitespace, legend occlusion, neutral grids, and honest axis limits? |
+| F7 Cross-artifact consistency | Do algorithm names, colors, units, rankings, captions, tables, README, and frozen scientific claims agree? |
+| F8 Package closure | Are figure README, quality audit MD/CSV, missing notes, manifest, and artifact index present and linked? |
+
+Additional blocking rules:
+
+- Do not use per-method 0–100 normalization as a cross-method performance claim; it forces every method to its own 100%. Use a shared population/common anchor or mark the figure diagnostic-only.
+- Do not interpolate endpoint-only evidence into a training curve.
+- Do not use internal titles, footnotes, filenames, prose annotations, colored decorative reference lines, hatch-based method emphasis, or a double-column canvas for a single-column request.
+- Multi-panel figures retain only structural `(a)`, `(b)`, `(c)` labels below axes; legends remain clear.
+- Boxplot limits must leave visible headroom above the largest whisker; one deterministic model-based value is a point/line, not a fabricated box.
+- Formal-test boxplots use one auditable row per held-out scenario/seed, not the final training checkpoint or a selected tail of training episodes; record the scenario/seed count.
+- Missing columns are recorded in `missing_figures.md`; never fabricate them.
 
 ## Table Gate
 

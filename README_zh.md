@@ -65,6 +65,8 @@
 - 编辑生成的 Python 实验文件前，必须加载 [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md)；直接使用中文 overview header 字段，不输出字面量 `# 中文为主总览：` 行。
 - Buddha ASCII 只用于入口脚本；重要或创新代码块需要简洁中文注释。
 - 最终完成前，必须核对 stage contract、报告声明、图轴/legend/文字与实际输出文件。
+- IEEE 图件包必须通过 F0-F8：冻结科学语义、测量模板几何、精确样式常数、数据完整性、PNG/PDF/SVG 导出、机器审计、最终尺寸目检、跨产物一致性与产物包收口。
+- Figure manifest 必须证明 PDF/PNG 物理尺寸、文件与数据 SHA256、SVG 字体/矢量证据，以及 `scientific_contract.no_clipped_valid_points=true`。
 - Git 提交保留 source/tests/docs/CSV/JSON/figures/gates/reports/manifests/lightweight evidence；排除 raw inputs、logs、caches 与大体积 solver caches，除非明确作为归档证据。
 - 不得把不同方法各自的 shaped training-objective reward 当作性能证据直接互比。
 - 训练后奖励比较必须使用同 tier 原始环境奖励差值，例如同一尺度的环境 `step()` reward 或 `eval_episodes.csv:reward`。
@@ -89,7 +91,7 @@
 | 脚本 | 作用 |
 |---|---|
 | [`scripts/validate_run_trace.py`](scripts/validate_run_trace.py) | 验证 run 文件夹中的训练记录、progress schema、checkpoint 与可选评估产物 |
-| [`scripts/check_ieee_plot_manifest.py`](scripts/check_ieee_plot_manifest.py) | 检查 figure manifest、导出覆盖率与 IEEE 图件包一致性 |
+| [`scripts/check_ieee_plot_manifest.py`](scripts/check_ieee_plot_manifest.py) | 检查 figure manifest、导出覆盖率、PDF/PNG 尺寸、无裁剪断言、SVG 字体/矢量证据、哈希与 IEEE 图件包一致性 |
 | [`scripts/audit_reproducible_training_project.py`](scripts/audit_reproducible_training_project.py) | 执行最终 smoke/semantic audit：根 README 导航、技能合规矩阵、raw reward 对比列、shaped reward claim 失败、高风险 claim 警告、报告、图件、表格、TensorBoard events、manifest、artifact index、生成代码头注释 |
 
 ## 资产索引
@@ -125,7 +127,7 @@
 |---|---|
 | 根 `README.md` 或结果 `index.md` | 导航页，不能只是简介或 changelog |
 | 主报告、summary、风险报告、debug/change log | 中文优先技术证据，并清晰标注 claim boundary |
-| `figures/`, figure README, `figure_quality_audit.md`, `figure_quality_audit.csv` | IEEE 风格图件与质量证据 |
+| `figures/`, figure README, `figure_quality_audit.md`, `figure_quality_audit.csv` | IEEE 风格图件、F0-F8 gate verdicts、最终尺寸目检与质量证据 |
 | `tables/`, `algorithm_comparison_summary.csv`, `same_tier_raw_reward_delta.csv`, run/eval/constraint summaries | 机器可读汇总 |
 | `reproducibility_manifest.json`, `artifact_index.csv` | SHA256/字节数清单与人类可读产物索引 |
 | `ppt_index.md` 或 `colleague_briefing.md` | 幻灯片映射、takeaway、claim boundary 与产物路径 |

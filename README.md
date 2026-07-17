@@ -65,6 +65,8 @@ Do not load every reference by default. The skill is designed as a compact route
 - Before editing generated Python experiment files, load [`assets/python_file_header_templates.md`](assets/python_file_header_templates.md); use the Chinese overview header fields directly without outputting a literal `# 中文为主总览：` line.
 - Buddha ASCII is only for entrypoints, and important or innovative code blocks need concise Chinese comments.
 - Before final completion, compare stage contracts, report claims, figure axes/legends/text, and actual output files.
+- IEEE figure packages must pass F0-F8: frozen scientific semantics, measured template geometry, exact style constants, data integrity, PNG/PDF/SVG export, machine audit, final-size visual QA, cross-artifact consistency, and package closure.
+- Figure manifests must prove PDF/PNG physical dimensions, file and data SHA256 values, SVG font/vector evidence, and `scientific_contract.no_clipped_valid_points=true`.
 - Git submission keeps source/tests/docs/CSV/JSON/figures/gates/reports/manifests/lightweight evidence and excludes raw inputs, logs, caches, and heavy solver caches unless explicitly archival.
 - Do not compare shaped training-objective rewards across methods as performance evidence.
 - Post-training reward comparisons must use same-tier raw environment reward delta, such as environment `step()` reward or `eval_episodes.csv:reward` on one scale.
@@ -89,7 +91,7 @@ Do not load every reference by default. The skill is designed as a compact route
 | Script | Purpose |
 |---|---|
 | [`scripts/validate_run_trace.py`](scripts/validate_run_trace.py) | Validates run folders for required training records, progress schema, checkpoints, and optional evaluation artifacts |
-| [`scripts/check_ieee_plot_manifest.py`](scripts/check_ieee_plot_manifest.py) | Checks figure manifests, export coverage, and IEEE figure package consistency |
+| [`scripts/check_ieee_plot_manifest.py`](scripts/check_ieee_plot_manifest.py) | Checks figure manifests, export coverage, PDF/PNG dimensions, no-clipping assertions, SVG font/vector evidence, hashes, and IEEE figure package consistency |
 | [`scripts/audit_reproducible_training_project.py`](scripts/audit_reproducible_training_project.py) | Performs final smoke/semantic audit: root README navigation, skill compliance matrix, raw reward comparison columns, shaped-reward claim failure, high-risk claim warnings, reports, figures, tables, TensorBoard events, manifests, artifact index, and generated-code header checks |
 
 ## Asset Index
@@ -125,7 +127,7 @@ Do not load every reference by default. The skill is designed as a compact route
 |---|---|
 | Root `README.md` or result `index.md` | Navigation page, not only introduction or changelog |
 | Main report, summary, risk report, debug/change log | Chinese-first technical evidence with clear claim boundaries |
-| `figures/`, figure README, `figure_quality_audit.md`, `figure_quality_audit.csv` | IEEE-style figures and quality evidence |
+| `figures/`, figure README, `figure_quality_audit.md`, `figure_quality_audit.csv` | IEEE-style figures, F0-F8 gate verdicts, final-size visual QA, and quality evidence |
 | `tables/`, `algorithm_comparison_summary.csv`, `same_tier_raw_reward_delta.csv`, run/eval/constraint summaries | Machine-readable summaries |
 | `reproducibility_manifest.json`, `artifact_index.csv` | SHA256/byte-count manifest and human-readable artifact index |
 | `ppt_index.md` or `colleague_briefing.md` | Slide map, takeaway, claim boundary, and artifact path |
